@@ -50,13 +50,13 @@ mAR01.tab20  <- unname(unlist(mmedidasAR01.20))
 mAR01.tab40  <- unname(unlist(mmedidasAR01.40))
 
 miltabelaAR01 <- data.frame(Porcentagem = c(mAR01.tab5[1],mAR01.tab10[1],mAR01.tab20[1],mAR01.tab40[1]), 
-                         Rmsd = c(mAR01.tab5[2],mAR01.tab10[2],mAR01.tab20[2],mAR01.tab40[2]),
+                         Rmse = c(mAR01.tab5[2],mAR01.tab10[2],mAR01.tab20[2],mAR01.tab40[2]),
                          Vicio = c(mAR01.tab5[3],mAR01.tab10[3],mAR01.tab20[3],mAR01.tab40[3]))
 
 ##Gerando Modelo AR2 (0,4; 0,2)
 
-mAR02a <-  arima.sim(n = 100, list(ar = c(0.4,0.2)))
-mAR02b <-  arima.sim(n = 100, list(ar = c(0.4,0.2)))
+mAR02a <-  arima.sim(n = 1000, list(ar = c(0.4,0.2)))
+mAR02b <-  arima.sim(n = 1000, list(ar = c(0.4,0.2)))
 
 ##Imputando dados faltantes
 
@@ -78,8 +78,8 @@ mmedidasAR02.40 <- metricas_mean(40,miss40_AR02, "Dado",dataAR02$Dado)
 
 ##Gerando Modelo AR2 (0,4; 0,5)
 
-mAR02c <-  arima.sim(n = 100, list(ar = c(0.4,0.5)))
-mAR02d <-  arima.sim(n = 100, list(ar = c(0.4,0.5)))
+mAR02c <-  arima.sim(n = 1000, list(ar = c(0.4,0.5)))
+mAR02d <-  arima.sim(n = 1000, list(ar = c(0.4,0.5)))
 
 ##Imputando dados faltantes
 
@@ -110,18 +110,26 @@ mAR02.tab20_2  <- unname(unlist(mmedidasAR02_2.20))
 mAR02.tab40_2  <- unname(unlist(mmedidasAR02_2.40))
 
 mtabelaAR02 <- data.frame(Porcentagem = c(mAR02.tab5[1],mAR02.tab10[1],mAR02.tab20[1],mAR02.tab40[1]), 
-                         Rmsd.0204 = c(mAR02.tab5[2],mAR02.tab10[2],mAR02.tab20[2],mAR02.tab40[2]),
-                         Rmsd.0405 = c(mAR02.tab5_2[2],mAR02.tab10_2[2],mAR02.tab20_2[2],mAR02.tab40_2[2]),
+                         Rmse.0204 = c(mAR02.tab5[2],mAR02.tab10[2],mAR02.tab20[2],mAR02.tab40[2]),
+                         Rmse.0405 = c(mAR02.tab5_2[2],mAR02.tab10_2[2],mAR02.tab20_2[2],mAR02.tab40_2[2]),
                          Vicio.0204 = c(mAR02.tab5[3],mAR02.tab10[3],mAR02.tab20[3],mAR02.tab40[3]),
                          Vicio.0405 = c(mAR02.tab5_2[3],mAR02.tab10_2[3],mAR02.tab20_2[3],mAR02.tab40_2[3]))
 
 mtabelaARGeral <- data.frame(Porcentagem = c(mAR02.tab5[1],mAR02.tab10[1],mAR02.tab20[1],mAR02.tab40[1]), 
-                            Rmsd.04 = c(mAR01.tab5[2],mAR01.tab10[2],mAR01.tab20[2],mAR01.tab40[2]),
-                            Rmsd.0204 = c(mAR02.tab5[2],mAR02.tab10[2],mAR02.tab20[2],mAR02.tab40[2]),
-                            Rmsd.0405 = c(mAR02.tab5_2[2],mAR02.tab10_2[2],mAR02.tab20_2[2],mAR02.tab40_2[2]),
+                            Rmse.04 = c(mAR01.tab5[2],mAR01.tab10[2],mAR01.tab20[2],mAR01.tab40[2]),
+                            Rmse.0204 = c(mAR02.tab5[2],mAR02.tab10[2],mAR02.tab20[2],mAR02.tab40[2]),
+                            Rmse.0405 = c(mAR02.tab5_2[2],mAR02.tab10_2[2],mAR02.tab20_2[2],mAR02.tab40_2[2]),
                             Vicio.04 = c(mAR01.tab5[3],mAR01.tab10[3],mAR01.tab20[3],mAR01.tab40[3]),
                             Vicio.0204 = c(mAR02.tab5[3],mAR02.tab10[3],mAR02.tab20[3],mAR02.tab40[3]),
                             Vicio.0405 = c(mAR02.tab5_2[3],mAR02.tab10_2[3],mAR02.tab20_2[3],mAR02.tab40_2[3]))
+
+#Gerando os Gráficos
+
+x11()
+par(mfrow=c(3,1))
+ts.plot(mAR01a)
+ts.plot(mAR02a)
+ts.plot(mAR02c)
 
 
 
