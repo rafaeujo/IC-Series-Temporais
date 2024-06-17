@@ -1,0 +1,87 @@
+XI <- read.table("Data_CPDO.txt")
+
+#NO
+ts.plot(XI$NO)
+
+x11()
+par(mfrow=c(2,1))
+acf(XI$NO)
+pacf(XI$NO)
+
+fitNO <- arima(XI$NO,order=c(1,0,1))
+x11()
+par(mfrow=c(2,1))
+acf(fitNO$residuals)
+pacf(fitNO$residuals)
+
+
+#NO2
+ts.plot(XI$NO2)
+
+x11()
+par(mfrow=c(2,1))
+acf(XI$NO2)
+pacf(XI$NO2)
+
+fitNO2 <- arima(XI$NO2,order=c(1,0,1))
+x11()
+par(mfrow=c(2,1))
+acf(fitNO2$residuals)
+pacf(fitNO2$residuals)
+
+#CO
+ts.plot(XI$CO)
+
+x11()
+par(mfrow=c(2,1))
+acf(XI$CO)
+pacf(XI$CO)
+
+fitCO <- arima(XI$CO,order=c(1,0,1))
+x11()
+par(mfrow=c(2,1))
+acf(fitCO$residuals)
+pacf(fitCO$residuals)
+
+#PM10
+ts.plot(XI$PM10)
+
+x11()
+par(mfrow=c(2,1))
+acf(XI$PM10)
+pacf(XI$PM10)
+
+fitPM10 <- arima(XI$PM10,order=c(1,0,0))
+x11()
+par(mfrow=c(2,1))
+acf(fitPM10$residuals)
+pacf(fitPM10$residuals)
+
+
+#NOX
+ts.plot(XI$NOX)
+
+x11()
+par(mfrow=c(2,1))
+acf(XI$NOX)
+pacf(XI$NOX)
+
+fitNOX <- arima(XI$NOX,order=c(1,0,0))
+x11()
+par(mfrow=c(2,1))
+acf(fitNOX$residuals)
+pacf(fitNOX$residuals)
+
+#03
+ts.plot(XI$O3)
+
+x11()
+par(mfrow=c(2,1))
+acf(XI$O3)
+pacf(XI$O3)
+
+fitO3 <- arima(XI$O3,order=c(1,0,0))
+x11()
+par(mfrow=c(2,1))
+acf(fitO3$residuals)
+pacf(fitO3$residuals)
