@@ -130,6 +130,8 @@ par(mfrow=c(3,1))
 ts.plot(mAR01a)
 ts.plot(mAR02a)
 ts.plot(mAR02c)
+y = 5
+
 
 
 
