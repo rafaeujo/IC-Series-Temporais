@@ -3,7 +3,7 @@
 ##Gerando Modelo AR1 (phi = 0.4)
 set.seed(31)
 
-##Legenda:
+##Legenda
 # mAR01 tem phi = 0,4
 # nAR01 tem phi = 0,6
 
@@ -128,35 +128,11 @@ mmedidasAR02_2.10 <- metricas_mean(10,mmiss10_AR02_2, "Dado",mdataAR02_2$Dado)
 mmedidasAR02_2.20 <- metricas_mean(20,mmiss20_AR02_2, "Dado",mdataAR02_2$Dado)
 mmedidasAR02_2.40 <- metricas_mean(40,mmiss40_AR02_2, "Dado",mdataAR02_2$Dado)
 
-
-##Gerando Modelo AR2 (0,4; 0,2)
-
-mAR02a <-  arima.sim(n = 1000, list(ar = c(0.4,0.2)))
-mAR02b <-  arima.sim(n = 1000, list(ar = c(0.4,0.2)))
-
-##Imputando dados faltantes
-
-library(missMethods)
-
-mdataAR02 <- data.frame(Dado = mAR02a, Coluna.controle = mAR02b)
-
-mmiss05_AR02 <-delete_MAR_censoring(mdataAR02, 0.05, "Dado", cols_ctrl = "Coluna.controle")
-mmiss10_AR02 <-delete_MAR_censoring(mdataAR02, 0.10, "Dado", cols_ctrl = "Coluna.controle")
-mmiss20_AR02 <-delete_MAR_censoring(mdataAR02, 0.20, "Dado", cols_ctrl = "Coluna.controle")
-mmiss40_AR02 <-delete_MAR_censoring(mdataAR02, 0.40, "Dado", cols_ctrl = "Coluna.controle")
-
-#Calculando RMSE
-
-mmedidasAR02.05 <- metricas_mean(5,mmiss05_AR02, "Dado",mdataAR02$Dado)
-mmedidasAR02.10 <- metricas_mean(10,mmiss10_AR02, "Dado",mdataAR02$Dado)
-mmedidasAR02.20 <- metricas_mean(20,mmiss20_AR02, "Dado",mdataAR02$Dado)
-mmedidasAR02.40 <- metricas_mean(40,mmiss40_AR02, "Dado",mdataAR02$Dado)
-
 ##Gerando Modelo ARMA (0,4; 0,2)
 
 ARMA11a <-  arima.sim(n = 1000, list(ar = c(0.4), ma = c(0.2)))
 ARMA11b <-  arima.sim(n = 1000, list(ar = c(0.4), ma = c(0.2)))
-  
+
 ##Imputando dados faltantes
 
 mdataARMA1 <- data.frame(Dado = ARMA11a, Coluna.controle = ARMA11b)
@@ -190,24 +166,19 @@ mARMA1.tab40  <- unname(unlist(medidasARMA1.40))
 
 
 mtabelaARGeral <- data.frame(Porcentagem = c(mAR02.tab5[1],mAR02.tab10[1],mAR02.tab20[1],mAR02.tab40[1]), 
-                            AR.Rmse.04 = c(mAR01.tab5[2],mAR01.tab10[2],mAR01.tab20[2],mAR01.tab40[2]),
-                            AR.Rmse.06 = c(nAR01.tab5[2],nAR01.tab10[2],nAR01.tab20[2],nAR01.tab40[2]),
-                            AR.Rmse.0204 = c(mAR02.tab5[2],mAR02.tab10[2],mAR02.tab20[2],mAR02.tab40[2]),
-                            AR.Rmse.0405 = c(mAR02.tab5_2[2],mAR02.tab10_2[2],mAR02.tab20_2[2],mAR02.tab40_2[2]),
-                            ARMA.Rmse.0402 = c(mARMA1.tab5[2],mARMA1.tab10[2],mARMA1.tab20[2],mARMA1.tab40[2]))
-                           
+                             AR.Rmse.04 = c(mAR01.tab5[2],mAR01.tab10[2],mAR01.tab20[2],mAR01.tab40[2]),
+                             AR.Rmse.06 = c(nAR01.tab5[2],nAR01.tab10[2],nAR01.tab20[2],nAR01.tab40[2]),
+                             AR.Rmse.0204 = c(mAR02.tab5[2],mAR02.tab10[2],mAR02.tab20[2],mAR02.tab40[2]),
+                             AR.Rmse.0405 = c(mAR02.tab5_2[2],mAR02.tab10_2[2],mAR02.tab20_2[2],mAR02.tab40_2[2]),
+                             ARMA.Rmse.0402 = c(mARMA1.tab5[2],mARMA1.tab10[2],mARMA1.tab20[2],mARMA1.tab40[2]))
+
 #Gerando os Gráficos
 
 x11()
-par(mfrow=c(2,2))
+par(mfrow=c(3,2))
 ts.plot(mAR01a)
 ts.plot(nAR01a)
 ts.plot(mAR02a)
 ts.plot(mAR02c)
-
-
-
-
-
-
+ts.plot(ARMA11a)
 
