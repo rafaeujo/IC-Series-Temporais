@@ -181,3 +181,7 @@ ts.plot(nAR01a)
 ts.plot(mAR02a)
 ts.plot(mAR02c)
 ts.plot(ARMA11a)
+
+##Salvando tabela
+
+write.csv(mtabelaARGeral.med, file = "milmediana.csv")

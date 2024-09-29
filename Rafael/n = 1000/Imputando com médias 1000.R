@@ -182,3 +182,6 @@ ts.plot(mAR02a)
 ts.plot(mAR02c)
 ts.plot(ARMA11a)
 
+##Salvando tabela
+
+write.csv(mtabelaARGeral,file ="milmedia.csv", row.names = FALSE)

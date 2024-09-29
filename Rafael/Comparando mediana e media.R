@@ -1,6 +1,9 @@
 ###AVISO
 #Para esse código rodar, é necessário antes rodar os códigos imputando a média e a mediana com n = 100 3 n = 1000
 
+set.seed(31)
+nAR01a <-  arima.sim(n = 1000, list(ar = c(0.6)))
+ts.plot(nAR01a)
 #Para n = 100
 
 Comparando.data.100 <- data.frame("Media" = c(mAR02.tab5.100, mAR02.tab10.100, mAR02.tab20.100,
