@@ -1,19 +1,65 @@
 ---
-title: "Relatório de Progresso"
-author: "Rafael Jordane de Souza Oliveira"
-format: docx
-editor: visual
+title: "Relatório de progresso" # -----> Título
+subtitle: "Iniciação Científica" # -----> Subtítulo
+author: "Rafael Jordane" # -----> Autoria
+date: "2024-09-29" # -----> Data de publicação
+date-format: short # -----> Formato de data curto: dd/mm/aaaa
+lang: pt # -----> Linguagem: português
+format: 
+  html:  
+    code-fold: true # -----> code-fold: `true` para "ocultar" o bloco de códigos
+    df_print: paged
+    theme: 
+      light: [pulse,custom.scss]
+title-block-banner: true # -----> Estilo de banner no topo do documento
 ---
+
+```{r}
+#| echo: false
+
+library(dplyr)
+library(knitr)
+```
 
 ## Breve introdução
 
-Ao iniciarmos as produções da pesquisa, foi feita uma introdução ao estudo de series temporais e aos modelos de ajuste ARIMA. Para ter controle daquilo que está sendo testado, nesse caso os métodos de imputação de dados faltantes, foram gerados algumas variações de modelos de AR e ARMA, que foram posteriormente duplicados para analisar o Erro Médio causado por cada método de imputação em relação aos dados orginais gerados. Esses modelos foram testados com diferentes metodos de comparação e em diferentes ajustes. Os principais resultados foram sumarizados a seguir.
+Ao iniciarmos as produções da pesquisa, foi feita uma introdução ao estudo de séries temporais e aos modelos de ajuste ARIMA. A intenção do trabalho realizado é pesquisar, testar e comparar diferentes metodologias para a imputação de dados faltantes em séries temporais. A ideia é que, ao encontrarmos o método mais eficiênte, esse método possa ser aplicado em um modelo de séries temporais que relaciona dados de poluição atmosférica no município de VItória/ES e mortes por doenças respiratórias agudas, também no município. Com melhor ajuste e refinamento da série, é possível que a relação entre a poluição do ar e as mortes fiquem ainda mais evidentes, possibilitando que órgãos publicos e a população como um todo tenho mais conhecimento do impacto dessa poluição, e possam posteriormente desenvolver medidas mais diretas para a mitigação de tais danos.
+
+## Os Ajustes
+
+As séries temporais foram geradas aleatoriamente à partir do modelo de ajuste ARIMA (*autoregressive integrated moving average*ados), seguindo os seguintes ajustes: AR01 $(\phi=0,4)$, AR01$(\phi=0,6)$, AR02 $(\phi_1=0.2, \phi_2=0,4)$, AR02 $(\phi_1=0.4, \phi_2=0,5)$ e ARMA $(\phi=0.2, \theta=0,4)$.
+
+Depois de geradas, as mesmas series foram replicadas para os diferentes métodos de imputação dos dados faltantes.
 
 ## Resultados
 
+A forma para a medição do impacto do método de imputação dos dados faltantes em cada ajuste foi a geração de séries duplicadas. Após remoção aleatória de dados em diferentes porcentagens, sendo elas 5%, 10%, 20% e 40% essas lacunas foram preenchidas com o método de imputação de dados, e depois disso, foi calculado a raiz do erro quadrático médio entre essa série que passou por modificação e a série que se mateve original. Os resultados foram registrados em tabelas para cada método de imputação e para dois tamanhos de amostra, 100 observações e 1000 observações. Esses resultados, que se encontram à seguir, foram separados em subceções para cada tamanho de amostra. Dessa forma, podemos comparar o efeito de cada método de imputação de dados para amostras de cada tamanho separadamente, analisando o impacto em relação a quantidade de dados faltantes gerados e o ajuste da série.
+
 ### Amostras de 100 observações:
 
-Nessa subseção se encontram os resultados obtidos através do processo de imputação de dados faltantes à partir de diferentes métodos em modelos de séries temporais, de diferentes ajustes, todos com uma amostra 100 observações dessa forma
+Nessa subseção se encontram os resultados obtidos através do processo de imputação de dados faltantes à partir de diferentes métodos em modelos de séries temporais, de diferentes ajustes, todos com uma amostra 100 observações.
+
+```{r}
+cemmedia <- read.csv("Planilhas/cemmedia.csv") 
+cemmedia <- cemmedia %>%
+  mutate(
+    X = NULL
+  )
+kable(cemmedia)
+```
+
+------------------------------------------------------------------------
+
+**Tabela 2:** Resultados comparação dos erros em cada porcentagem de dados faltantes e ajuste, com imputação da média e amostra de 100 observações.
+
+```{r}
+cemmediana <- read.csv("Planilhas/cemmediana.csv") 
+cemmediana
+```
+
+**Tabela 4:** Resultados comparação dos erros em cada porcentagem de dados faltantes e modelo, com imputação da mediana e amostra de 100 observações.
+
+### Amostras de 1000 observações:
 
 ```{r}
 milmedia <- read.csv("Planilhas/milmedia.csv")
@@ -25,16 +71,6 @@ milmedia
 **Tabela 1:** Resultados comparação dos erros em cada porcentagem de dados faltantes e modelo, com imputação da média e amostra de 1000 observações.
 
 ```{r}
-cemmedia <- read.csv("Planilhas/cemmedia.csv")
-cemmedia
-
-```
-
-------------------------------------------------------------------------
-
-**Tabela 2:** Resultados comparação dos erros em cada porcentagem de dados faltantes e modelo, com imputação da média e amostra de 100 observações.
-
-```{r}
 milmediana <- read.csv("Planilhas/milmediana.csv")
 milmediana
 ```
@@ -42,10 +78,3 @@ milmediana
 ------------------------------------------------------------------------
 
 **Tabela 3:** Resultados comparação dos erros em cada porcentagem de dados faltantes e modelo, com imputação da mediana e amostra de 1000 observações.
-
-```{r}
-cemmediana <- read.csv("Planilhas/cemmediana.csv")
-cemmediana
-```
-
-**Tabela 4:** Resultados comparação dos erros em cada porcentagem de dados faltantes e modelo, com imputação da mediana e amostra de 100 observações.
