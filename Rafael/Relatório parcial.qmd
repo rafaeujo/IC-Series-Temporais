@@ -19,6 +19,7 @@ title-block-banner: true # -----> Estilo de banner no topo do documento
 
 library(dplyr)
 library(knitr)
+library(rlang)
 ```
 
 ## Breve introdução
@@ -27,54 +28,110 @@ Ao iniciarmos as produções da pesquisa, foi feita uma introdução ao estudo d
 
 ## Os Ajustes
 
-As séries temporais foram geradas aleatoriamente à partir do modelo de ajuste ARIMA (*autoregressive integrated moving average*ados), seguindo os seguintes ajustes: AR01 $(\phi=0,4)$, AR01$(\phi=0,6)$, AR02 $(\phi_1=0.2, \phi_2=0,4)$, AR02 $(\phi_1=0.4, \phi_2=0,5)$ e ARMA $(\phi=0.2, \theta=0,4)$.
+As séries temporais foram geradas aleatoriamente à partir do modelo de ajuste ARIMA (*autoregressive integrated moving average*ados), seguindo os seguintes ajustes: AR(1) $(\phi=0,4)$, AR(1)$(\phi=0,6)$, AR(2) $(\phi_1=0.2, \phi_2=0,4)$, AR(2) $(\phi_1=0.4, \phi_2=0,5)$ e ARMA(1,1) $(\phi=0.2, \theta=0,4)$.
 
 Depois de geradas, as mesmas series foram replicadas para os diferentes métodos de imputação dos dados faltantes.
 
 ## Resultados
 
-A forma para a medição do impacto do método de imputação dos dados faltantes em cada ajuste foi a geração de séries duplicadas. Após remoção aleatória de dados em diferentes porcentagens, sendo elas 5%, 10%, 20% e 40% essas lacunas foram preenchidas com o método de imputação de dados, e depois disso, foi calculado a raiz do erro quadrático médio entre essa série que passou por modificação e a série que se mateve original. Os resultados foram registrados em tabelas para cada método de imputação e para dois tamanhos de amostra, 100 observações e 1000 observações. Esses resultados, que se encontram à seguir, foram separados em subceções para cada tamanho de amostra. Dessa forma, podemos comparar o efeito de cada método de imputação de dados para amostras de cada tamanho separadamente, analisando o impacto em relação a quantidade de dados faltantes gerados e o ajuste da série.
+A forma para a medição do impacto do método de imputação dos dados faltantes **(citar método utilizado)** em cada ajuste foi a geração de séries duplicadas. Após remoção aleatória de dados em diferentes porcentagens, sendo elas 5%, 10%, 20% e 40% essas lacunas foram preenchidas com algum método de imputação de dados, e depois disso, foi calculado a raiz do erro quadrático médio entre essa série que passou por modificação e a série que se mateve original. Os resultados foram registrados em tabelas para cada método de imputação e para dois tamanhos de amostra, 100 observações e 1000 observações. Esses resultados, que se encontram à seguir, foram separados em subceções para cada tamanho de amostra. Dessa forma, podemos comparar o efeito de cada método de imputação de dados para amostras de cada tamanho separadamente, analisando o impacto em relação a quantidade de dados faltantes gerados e o ajuste da série.
 
 ### Amostras de 100 observações:
 
-Nessa subseção se encontram os resultados obtidos através do processo de imputação de dados faltantes à partir de diferentes métodos em modelos de séries temporais, de diferentes ajustes, todos com uma amostra 100 observações.
+Nessa subseção se encontram os resultados obtidos através do processo de imputação de dados faltantes à partir de diferentes métodos em modelos de séries temporais, de diferentes ajustes, todos com uma amostra de 100 observações.
 
 ```{r}
 cemmedia <- read.csv("Planilhas/cemmedia.csv") 
-cemmedia <- cemmedia %>%
-  mutate(
-    X = NULL
-  )
-kable(cemmedia)
+
+ajustetabela <- function(data,col0, col1,col2,col3,col4,col5){
+  guarapan <- data %>%
+    rename(
+         AR_0.4 = {{col1}},
+         AR_0.6 = {{col2}},
+         AR_0.2_0.4 = {{col3}}, 
+         AR_0.4_0.5 = {{col4}}, 
+         ARMA_0.4_0.2 = {{col5}}
+         );
+print(guarapan)
+}
+    
+library(dplyr)
+
+ajustetabela <- function(data, col1, col2, col3, col4, col5) {
+  col1 <- enquo(col1)
+  col2 <- enquo(col2)
+  col3 <- enquo(col3)
+  col4 <- enquo(col4)
+  col5 <- enquo(col5)
+
+  guarapan <- data %>%
+    rename(
+      AR_0.4 = !!col1,
+      AR_0.6 = !!col2,
+      AR_0.2_0.4 = !!col3,
+      AR_0.4_0.5 = !!col4,
+      ARMA_0.4_0.2 = !!col5
+    ) %>%
+    mutate(X = NULL)  # Remove a coluna X
+  
+
+  return(kable(guarapan))
+}
+
+
+ajustetabela(cemmedia,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
+
 ```
 
 ------------------------------------------------------------------------
 
-**Tabela 2:** Resultados comparação dos erros em cada porcentagem de dados faltantes e ajuste, com imputação da média e amostra de 100 observações.
+**Tabela 1:** Tabela gerada com os resultados dos cálculos da raiz dos erros quadraticos médios entre a série em que os dados faltantes foram substituidos pela média e série original, com 100 observações.
+
+A Tabela 1 revela que, à medida que o percentual de dados faltantes nas séries ajustadas aumenta, o valor da raiz do erro quadrático médio (RMSE) também tende a crescer. Isso indica que o método de imputação resulta em séries cada vez mais distantes da série original à medida que o número de dados ausentes aumenta.
+
+Por outro lado, o impacto do aumento da complexidade do ajuste não segue um padrão tão claro. Embora o RMSE tenha aumentado em algumas situações e diminuído em outras, é possível notar uma leve tendência de aumento nos valores do RMSE em todas as porcentagens à medida que os modelos ajustados de séries temporais se tornam mais complexos. Essa variação sugere que a complexidade do modelo pode influenciar a precisão das previsões, mas não de maneira uniforme.
 
 ```{r}
 cemmediana <- read.csv("Planilhas/cemmediana.csv") 
-cemmediana
+
+ajustetabela(cemmediana,"AR.Rmse.04.med.100","AR.Rmse.06.med.100","AR.Rmse.0204.med.100","AR.Rmse.0405.med.100","ARMA.Rmse.0402.med.100")
 ```
 
-**Tabela 4:** Resultados comparação dos erros em cada porcentagem de dados faltantes e modelo, com imputação da mediana e amostra de 100 observações.
+**Tabela 2:** Tabela gerada com os resultados dos cálculos da raiz dos erros quadraticos médios entre a série em que os dados faltantes foram substituidos pela mediana e série original, com 100 observações.
+
+A Tabela 2, assim como o observado anteriomente na Tabela 1, revela que, à medida que o percentual de dados faltantes nas séries ajustadas aumenta, o valor da raiz do erro quadrático médio (RMSE) também tende a crescer. Isso indica que o método de imputação resulta em séries cada vez mais distantes da série original à medida que o número de dados ausentes aumenta.
+
+Por outro lado, o impacto do aumento da complexidade do ajuste não segue um padrão tão claro. Embora o RMSE tenha aumentado em algumas situações e diminuído em outras, é possível notar uma leve tendência de aumento nos valores do RMSE em todas as porcentagens à medida que os modelos ajustados de séries temporais se tornam mais complexos. Essa variação sugere que a complexidade do modelo pode influenciar a precisão das previsões, mas não de maneira uniforme.
+
+Não há mudança clara nos resultados que indique impacto da mudança do método de imputação de dados da média para a mediana.
 
 ### Amostras de 1000 observações:
 
 ```{r}
 milmedia <- read.csv("Planilhas/milmedia.csv")
-milmedia
+ajustetabela(milmedia,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
+
 ```
 
 ------------------------------------------------------------------------
 
-**Tabela 1:** Resultados comparação dos erros em cada porcentagem de dados faltantes e modelo, com imputação da média e amostra de 1000 observações.
+**Tabela 3:** Tabela gerada com os resultados dos cálculos da raiz dos erros quadraticos médios entre a série em que os dados faltantes foram substituidos pela media e série original, com 1000 observações.
+
+A Tabela 3 revela que, à medida que o percentual de dados faltantes nas séries ajustadas aumenta, o valor da raiz do erro quadrático médio (RMSE) também tende a crescer. Isso indica que o método de imputação resulta em séries cada vez mais distantes da série original à medida que o número de dados ausentes aumenta.
+
+Ao contrário dos resultados observados na imputação da média com 100 observações, nesta análise o impacto do aumento da complexidade do ajuste apresenta um padrão mais consistente. Notavelmente, no modelo mais complexo (AR(2) com $\phi=0.4$ e $\phi=0.5$), houve um aumento significativo no RMSE em comparação aos outros modelos. Essa variação iretifica que, apesar de certa inconsistencia, há indicios de que a complexidade do modelo pode afetar a precisão das previsões.
 
 ```{r}
 milmediana <- read.csv("Planilhas/milmediana.csv")
-milmediana
+ajustetabela(milmediana,"AR.Rmse.04.med","AR.Rmse.06.med","AR.Rmse.0204.med","AR.Rmse.0405.med","ARMA.Rmse.0402.med")
 ```
 
 ------------------------------------------------------------------------
 
-**Tabela 3:** Resultados comparação dos erros em cada porcentagem de dados faltantes e modelo, com imputação da mediana e amostra de 1000 observações.
+**Tabela 4:** Tabela gerada com os resultados dos cálculos da raiz dos erros quadraticos médios entre a série em que os dados faltantes foram substituidos pela mediana e série original, com 1000 observações.
+
+A Tabela 4 revela que, à medida que o percentual de dados faltantes nas séries ajustadas aumenta, o valor da raiz do erro quadrático médio (RMSE) também tende a crescer. Isso indica que o método de imputação resulta em séries cada vez mais distantes da série original à medida que o número de dados ausentes aumenta.
+
+Ao contrário dos resultados observados na imputação da média com 100 observações, nesta análise o impacto do aumento da complexidade do ajuste apresenta um padrão mais consistente. Notavelmente, no modelo mais complexo (AR(2) com $\phi=0.4$ e $\phi=0.5$), houve um aumento significativo no RMSE em comparação aos outros modelos. Essa variação iretifica que, apesar de certa inconsistencia, há indicios de que a complexidade do modelo pode afetar a precisão das previsões.
+
+Novamente há mudança clara nos resultados que indique impacto da mudança do método de imputação de dados da média para a mediana.

@@ -134,43 +134,76 @@ Attaching package: 'dplyr'</code></pre>
 </section>
 <section id="os-ajustes" class="level2">
 <h2 class="anchored" data-anchor-id="os-ajustes">Os Ajustes</h2>
-<p>As séries temporais foram geradas aleatoriamente à partir do modelo de ajuste ARIMA (<em>autoregressive integrated moving average</em>ados), seguindo os seguintes ajustes: AR01 <span class="math inline">\((\phi=0,4)\)</span>, AR01<span class="math inline">\((\phi=0,6)\)</span>, AR02 <span class="math inline">\((\phi_1=0.2, \phi_2=0,4)\)</span>, AR02 <span class="math inline">\((\phi_1=0.4, \phi_2=0,5)\)</span> e ARMA <span class="math inline">\((\phi=0.2, \theta=0,4)\)</span>.</p>
+<p>As séries temporais foram geradas aleatoriamente à partir do modelo de ajuste ARIMA (<em>autoregressive integrated moving average</em>ados), seguindo os seguintes ajustes: AR(1) <span class="math inline">\((\phi=0,4)\)</span>, AR(1)<span class="math inline">\((\phi=0,6)\)</span>, AR(2) <span class="math inline">\((\phi_1=0.2, \phi_2=0,4)\)</span>, AR(2) <span class="math inline">\((\phi_1=0.4, \phi_2=0,5)\)</span> e ARMA(1,1) <span class="math inline">\((\phi=0.2, \theta=0,4)\)</span>.</p>
 <p>Depois de geradas, as mesmas series foram replicadas para os diferentes métodos de imputação dos dados faltantes.</p>
 </section>
 <section id="resultados" class="level2">
 <h2 class="anchored" data-anchor-id="resultados">Resultados</h2>
-<p>A forma para a medição do impacto do método de imputação dos dados faltantes em cada ajuste foi a geração de séries duplicadas. Após remoção aleatória de dados em diferentes porcentagens, sendo elas 5%, 10%, 20% e 40% essas lacunas foram preenchidas com o método de imputação de dados, e depois disso, foi calculado a raiz do erro quadrático médio entre essa série que passou por modificação e a série que se mateve original. Os resultados foram registrados em tabelas para cada método de imputação e para dois tamanhos de amostra, 100 observações e 1000 observações. Esses resultados, que se encontram à seguir, foram separados em subceções para cada tamanho de amostra. Dessa forma, podemos comparar o efeito de cada método de imputação de dados para amostras de cada tamanho separadamente, analisando o impacto em relação a quantidade de dados faltantes gerados e o ajuste da série.</p>
+<p>A forma para a medição do impacto do método de imputação dos dados faltantes <strong>(citar método utilizado)</strong> em cada ajuste foi a geração de séries duplicadas. Após remoção aleatória de dados em diferentes porcentagens, sendo elas 5%, 10%, 20% e 40% essas lacunas foram preenchidas com algum método de imputação de dados, e depois disso, foi calculado a raiz do erro quadrático médio entre essa série que passou por modificação e a série que se mateve original. Os resultados foram registrados em tabelas para cada método de imputação e para dois tamanhos de amostra, 100 observações e 1000 observações. Esses resultados, que se encontram à seguir, foram separados em subceções para cada tamanho de amostra. Dessa forma, podemos comparar o efeito de cada método de imputação de dados para amostras de cada tamanho separadamente, analisando o impacto em relação a quantidade de dados faltantes gerados e o ajuste da série.</p>
 <section id="amostras-de-100-observações" class="level3">
 <h3 class="anchored" data-anchor-id="amostras-de-100-observações">Amostras de 100 observações:</h3>
-<p>Nessa subseção se encontram os resultados obtidos através do processo de imputação de dados faltantes à partir de diferentes métodos em modelos de séries temporais, de diferentes ajustes, todos com uma amostra 100 observações.</p>
+<p>Nessa subseção se encontram os resultados obtidos através do processo de imputação de dados faltantes à partir de diferentes métodos em modelos de séries temporais, de diferentes ajustes, todos com uma amostra de 100 observações.</p>
 <div class="cell">
 <details>
 <summary>Código</summary>
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>cemmedia <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/cemmedia.csv"</span>) </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>cemmedia <span class="ot">&lt;-</span> cemmedia <span class="sc">%&gt;%</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">X =</span> <span class="cn">NULL</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="fu">kable</span>(cemmedia)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>ajustetabela <span class="ot">&lt;-</span> <span class="cf">function</span>(data,col0, col1,col2,col3,col4,col5){</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  guarapan <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">AR_0.4 =</span> {{col1}},</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">AR_0.6 =</span> {{col2}},</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>         <span class="at">AR_0.2_0.4 =</span> {{col3}}, </span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">AR_0.4_0.5 =</span> {{col4}}, </span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">ARMA_0.4_0.2 =</span> {{col5}}</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>         );</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(guarapan)</span>
+<span id="cb4-13"><a href="#cb4-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-14"><a href="#cb4-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb4-15"><a href="#cb4-15" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb4-16"><a href="#cb4-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-17"><a href="#cb4-17" aria-hidden="true" tabindex="-1"></a>ajustetabela <span class="ot">&lt;-</span> <span class="cf">function</span>(data, col1, col2, col3, col4, col5) {</span>
+<span id="cb4-18"><a href="#cb4-18" aria-hidden="true" tabindex="-1"></a>  col1 <span class="ot">&lt;-</span> <span class="fu">enquo</span>(col1)</span>
+<span id="cb4-19"><a href="#cb4-19" aria-hidden="true" tabindex="-1"></a>  col2 <span class="ot">&lt;-</span> <span class="fu">enquo</span>(col2)</span>
+<span id="cb4-20"><a href="#cb4-20" aria-hidden="true" tabindex="-1"></a>  col3 <span class="ot">&lt;-</span> <span class="fu">enquo</span>(col3)</span>
+<span id="cb4-21"><a href="#cb4-21" aria-hidden="true" tabindex="-1"></a>  col4 <span class="ot">&lt;-</span> <span class="fu">enquo</span>(col4)</span>
+<span id="cb4-22"><a href="#cb4-22" aria-hidden="true" tabindex="-1"></a>  col5 <span class="ot">&lt;-</span> <span class="fu">enquo</span>(col5)</span>
+<span id="cb4-23"><a href="#cb4-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" aria-hidden="true" tabindex="-1"></a>  guarapan <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb4-25"><a href="#cb4-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">rename</span>(</span>
+<span id="cb4-26"><a href="#cb4-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">AR_0.4 =</span> <span class="sc">!!</span>col1,</span>
+<span id="cb4-27"><a href="#cb4-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">AR_0.6 =</span> <span class="sc">!!</span>col2,</span>
+<span id="cb4-28"><a href="#cb4-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">AR_0.2_0.4 =</span> <span class="sc">!!</span>col3,</span>
+<span id="cb4-29"><a href="#cb4-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">AR_0.4_0.5 =</span> <span class="sc">!!</span>col4,</span>
+<span id="cb4-30"><a href="#cb4-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">ARMA_0.4_0.2 =</span> <span class="sc">!!</span>col5</span>
+<span id="cb4-31"><a href="#cb4-31" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">%&gt;%</span></span>
+<span id="cb4-32"><a href="#cb4-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">X =</span> <span class="cn">NULL</span>)  <span class="co"># Remove a coluna X</span></span>
+<span id="cb4-33"><a href="#cb4-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb4-34"><a href="#cb4-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-35"><a href="#cb4-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">kable</span>(guarapan))</span>
+<span id="cb4-36"><a href="#cb4-36" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb4-37"><a href="#cb4-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-38"><a href="#cb4-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-39"><a href="#cb4-39" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(cemmedia,<span class="st">"AR.Rmse.04"</span>,<span class="st">"AR.Rmse.06"</span>,<span class="st">"AR.Rmse.0204"</span>,<span class="st">"AR.Rmse.0405"</span>,<span class="st">"ARMA.Rmse.0402"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="table table-sm table-striped small">
 <colgroup>
+<col style="width: 17%">
+<col style="width: 14%">
+<col style="width: 14%">
 <col style="width: 16%">
-<col style="width: 14%">
-<col style="width: 14%">
-<col style="width: 17%">
-<col style="width: 17%">
-<col style="width: 20%">
+<col style="width: 16%">
+<col style="width: 19%">
 </colgroup>
 <thead>
 <tr class="header">
 <th style="text-align: right;">Porcentagem</th>
-<th style="text-align: right;">AR.Rmse.04</th>
-<th style="text-align: right;">AR.Rmse.06</th>
-<th style="text-align: right;">AR.Rmse.0204</th>
-<th style="text-align: right;">AR.Rmse.0405</th>
-<th style="text-align: right;">ARMA.Rmse.0402</th>
+<th style="text-align: right;">AR_0.4</th>
+<th style="text-align: right;">AR_0.6</th>
+<th style="text-align: right;">AR_0.2_0.4</th>
+<th style="text-align: right;">AR_0.4_0.5</th>
+<th style="text-align: right;">ARMA_0.4_0.2</th>
 </tr>
 </thead>
 <tbody>
@@ -211,67 +244,215 @@ Attaching package: 'dplyr'</code></pre>
 </div>
 </div>
 <hr>
-<p><strong>Tabela 2:</strong> Resultados comparação dos erros em cada porcentagem de dados faltantes e ajuste, com imputação da média e amostra de 100 observações.</p>
+<p><strong>Tabela 1:</strong> Tabela gerada com os resultados dos cálculos da raiz dos erros quadraticos médios entre a série em que os dados faltantes foram substituidos pela média e série original, com 100 observações.</p>
+<p>A Tabela 1 revela que, à medida que o percentual de dados faltantes nas séries ajustadas aumenta, o valor da raiz do erro quadrático médio (RMSE) também tende a crescer. Isso indica que o método de imputação resulta em séries cada vez mais distantes da série original à medida que o número de dados ausentes aumenta.</p>
+<p>Por outro lado, o impacto do aumento da complexidade do ajuste não segue um padrão tão claro. Embora o RMSE tenha aumentado em algumas situações e diminuído em outras, é possível notar uma leve tendência de aumento nos valores do RMSE em todas as porcentagens à medida que os modelos ajustados de séries temporais se tornam mais complexos. Essa variação sugere que a complexidade do modelo pode influenciar a precisão das previsões, mas não de maneira uniforme.</p>
 <div class="cell">
 <details>
 <summary>Código</summary>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>cemmediana <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/cemmediana.csv"</span>) </span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>cemmediana</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(cemmediana,<span class="st">"AR.Rmse.04.med.100"</span>,<span class="st">"AR.Rmse.06.med.100"</span>,<span class="st">"AR.Rmse.0204.med.100"</span>,<span class="st">"AR.Rmse.0405.med.100"</span>,<span class="st">"ARMA.Rmse.0402.med.100"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>  X Porcentagem AR.Rmse.04.med.100 AR.Rmse.06.med.100 AR.Rmse.0204.med.100
-1 1           5          0.1804544          0.3164807            0.2147843
-2 2          10          0.1979142          0.3498192            0.3683235
-3 3          20          0.4049888          0.5031434            0.5647040
-4 4          40          0.6466893          0.7632819            0.7210497
-  AR.Rmse.0405.med.100 ARMA.Rmse.0402.med.100
-1            0.1137387              0.2444201
-2            0.4034666              0.3811761
-3            0.6577882              0.4927660
-4            0.9913392              0.8409461</code></pre>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Porcentagem</th>
+<th style="text-align: right;">AR_0.4</th>
+<th style="text-align: right;">AR_0.6</th>
+<th style="text-align: right;">AR_0.2_0.4</th>
+<th style="text-align: right;">AR_0.4_0.5</th>
+<th style="text-align: right;">ARMA_0.4_0.2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.1804544</td>
+<td style="text-align: right;">0.3164807</td>
+<td style="text-align: right;">0.2147843</td>
+<td style="text-align: right;">0.1137387</td>
+<td style="text-align: right;">0.2444201</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.1979142</td>
+<td style="text-align: right;">0.3498192</td>
+<td style="text-align: right;">0.3683235</td>
+<td style="text-align: right;">0.4034666</td>
+<td style="text-align: right;">0.3811761</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0.4049888</td>
+<td style="text-align: right;">0.5031434</td>
+<td style="text-align: right;">0.5647040</td>
+<td style="text-align: right;">0.6577882</td>
+<td style="text-align: right;">0.4927660</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">0.6466893</td>
+<td style="text-align: right;">0.7632819</td>
+<td style="text-align: right;">0.7210497</td>
+<td style="text-align: right;">0.9913392</td>
+<td style="text-align: right;">0.8409461</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
-<p><strong>Tabela 4:</strong> Resultados comparação dos erros em cada porcentagem de dados faltantes e modelo, com imputação da mediana e amostra de 100 observações.</p>
+<p><strong>Tabela 2:</strong> Tabela gerada com os resultados dos cálculos da raiz dos erros quadraticos médios entre a série em que os dados faltantes foram substituidos pela mediana e série original, com 100 observações.</p>
+<p>A Tabela 2, assim como o observado anteriomente na Tabela 1, revela que, à medida que o percentual de dados faltantes nas séries ajustadas aumenta, o valor da raiz do erro quadrático médio (RMSE) também tende a crescer. Isso indica que o método de imputação resulta em séries cada vez mais distantes da série original à medida que o número de dados ausentes aumenta.</p>
+<p>Por outro lado, o impacto do aumento da complexidade do ajuste não segue um padrão tão claro. Embora o RMSE tenha aumentado em algumas situações e diminuído em outras, é possível notar uma leve tendência de aumento nos valores do RMSE em todas as porcentagens à medida que os modelos ajustados de séries temporais se tornam mais complexos. Essa variação sugere que a complexidade do modelo pode influenciar a precisão das previsões, mas não de maneira uniforme.</p>
+<p>Não há mudança clara nos resultados que indique impacto da mudança do método de imputação de dados da média para a mediana.</p>
 </section>
 <section id="amostras-de-1000-observações" class="level3">
 <h3 class="anchored" data-anchor-id="amostras-de-1000-observações">Amostras de 1000 observações:</h3>
 <div class="cell">
 <details>
 <summary>Código</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>milmedia <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/milmedia.csv"</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>milmedia</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>milmedia <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/milmedia.csv"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(milmedia,<span class="st">"AR.Rmse.04"</span>,<span class="st">"AR.Rmse.06"</span>,<span class="st">"AR.Rmse.0204"</span>,<span class="st">"AR.Rmse.0405"</span>,<span class="st">"ARMA.Rmse.0402"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>  Porcentagem AR.Rmse.04 AR.Rmse.06 AR.Rmse.0204 AR.Rmse.0405 ARMA.Rmse.0402
-1           5  0.2357325  0.2518541    0.2570215    0.4021781      0.3428851
-2          10  0.3449642  0.3665185    0.3797436    0.5752837      0.4279775
-3          20  0.4934541  0.4960622    0.5387605    0.8067815      0.5667309
-4          40  0.6981557  0.7561148    0.7177946    1.2912187      0.7537121</code></pre>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Porcentagem</th>
+<th style="text-align: right;">AR_0.4</th>
+<th style="text-align: right;">AR_0.6</th>
+<th style="text-align: right;">AR_0.2_0.4</th>
+<th style="text-align: right;">AR_0.4_0.5</th>
+<th style="text-align: right;">ARMA_0.4_0.2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.2357325</td>
+<td style="text-align: right;">0.2518541</td>
+<td style="text-align: right;">0.2570215</td>
+<td style="text-align: right;">0.4021781</td>
+<td style="text-align: right;">0.3428851</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.3449642</td>
+<td style="text-align: right;">0.3665185</td>
+<td style="text-align: right;">0.3797436</td>
+<td style="text-align: right;">0.5752837</td>
+<td style="text-align: right;">0.4279775</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0.4934541</td>
+<td style="text-align: right;">0.4960622</td>
+<td style="text-align: right;">0.5387605</td>
+<td style="text-align: right;">0.8067815</td>
+<td style="text-align: right;">0.5667309</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">0.6981557</td>
+<td style="text-align: right;">0.7561148</td>
+<td style="text-align: right;">0.7177946</td>
+<td style="text-align: right;">1.2912187</td>
+<td style="text-align: right;">0.7537121</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <hr>
-<p><strong>Tabela 1:</strong> Resultados comparação dos erros em cada porcentagem de dados faltantes e modelo, com imputação da média e amostra de 1000 observações.</p>
+<p><strong>Tabela 3:</strong> Tabela gerada com os resultados dos cálculos da raiz dos erros quadraticos médios entre a série em que os dados faltantes foram substituidos pela media e série original, com 1000 observações.</p>
+<p>A Tabela 3 revela que, à medida que o percentual de dados faltantes nas séries ajustadas aumenta, o valor da raiz do erro quadrático médio (RMSE) também tende a crescer. Isso indica que o método de imputação resulta em séries cada vez mais distantes da série original à medida que o número de dados ausentes aumenta.</p>
+<p>Ao contrário dos resultados observados na imputação da média com 100 observações, nesta análise o impacto do aumento da complexidade do ajuste apresenta um padrão mais consistente. Notavelmente, no modelo mais complexo (AR(2) com <span class="math inline">\(\phi=0.4\)</span> e <span class="math inline">\(\phi=0.5\)</span>), houve um aumento significativo no RMSE em comparação aos outros modelos. Essa variação iretifica que, apesar de certa inconsistencia, há indicios de que a complexidade do modelo pode afetar a precisão das previsões.</p>
 <div class="cell">
 <details>
 <summary>Código</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>milmediana <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/milmediana.csv"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>milmediana</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>milmediana <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/milmediana.csv"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(milmediana,<span class="st">"AR.Rmse.04.med"</span>,<span class="st">"AR.Rmse.06.med"</span>,<span class="st">"AR.Rmse.0204.med"</span>,<span class="st">"AR.Rmse.0405.med"</span>,<span class="st">"ARMA.Rmse.0402.med"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<div class="cell-output cell-output-stdout">
-<pre><code>  X Porcentagem AR.Rmse.04.med AR.Rmse.06.med AR.Rmse.0204.med AR.Rmse.0405.med
-1 1           5      0.2351958      0.2514991        0.2551379        0.4030686
-2 2          10      0.3450636      0.3688178        0.3784964        0.5708639
-3 3          20      0.4933475      0.4978918        0.5391817        0.8006419
-4 4          40      0.6971285      0.7563042        0.7171511        1.2834627
-  ARMA.Rmse.0402.med
-1          0.3428318
-2          0.4279534
-3          0.5666016
-4          0.7534568</code></pre>
+<div class="cell-output-display">
+<table class="table table-sm table-striped small">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Porcentagem</th>
+<th style="text-align: right;">AR_0.4</th>
+<th style="text-align: right;">AR_0.6</th>
+<th style="text-align: right;">AR_0.2_0.4</th>
+<th style="text-align: right;">AR_0.4_0.5</th>
+<th style="text-align: right;">ARMA_0.4_0.2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.2351958</td>
+<td style="text-align: right;">0.2514991</td>
+<td style="text-align: right;">0.2551379</td>
+<td style="text-align: right;">0.4030686</td>
+<td style="text-align: right;">0.3428318</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.3450636</td>
+<td style="text-align: right;">0.3688178</td>
+<td style="text-align: right;">0.3784964</td>
+<td style="text-align: right;">0.5708639</td>
+<td style="text-align: right;">0.4279534</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0.4933475</td>
+<td style="text-align: right;">0.4978918</td>
+<td style="text-align: right;">0.5391817</td>
+<td style="text-align: right;">0.8006419</td>
+<td style="text-align: right;">0.5666016</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">0.6971285</td>
+<td style="text-align: right;">0.7563042</td>
+<td style="text-align: right;">0.7171511</td>
+<td style="text-align: right;">1.2834627</td>
+<td style="text-align: right;">0.7534568</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <hr>
-<p><strong>Tabela 3:</strong> Resultados comparação dos erros em cada porcentagem de dados faltantes e modelo, com imputação da mediana e amostra de 1000 observações.</p>
+<p><strong>Tabela 4:</strong> Tabela gerada com os resultados dos cálculos da raiz dos erros quadraticos médios entre a série em que os dados faltantes foram substituidos pela mediana e série original, com 1000 observações.</p>
+<p>A Tabela 4 revela que, à medida que o percentual de dados faltantes nas séries ajustadas aumenta, o valor da raiz do erro quadrático médio (RMSE) também tende a crescer. Isso indica que o método de imputação resulta em séries cada vez mais distantes da série original à medida que o número de dados ausentes aumenta.</p>
+<p>Ao contrário dos resultados observados na imputação da média com 100 observações, nesta análise o impacto do aumento da complexidade do ajuste apresenta um padrão mais consistente. Notavelmente, no modelo mais complexo (AR(2) com <span class="math inline">\(\phi=0.4\)</span> e <span class="math inline">\(\phi=0.5\)</span>), houve um aumento significativo no RMSE em comparação aos outros modelos. Essa variação iretifica que, apesar de certa inconsistencia, há indicios de que a complexidade do modelo pode afetar a precisão das previsões.</p>
+<p>Novamente há mudança clara nos resultados que indique impacto da mudança do método de imputação de dados da média para a mediana.</p>
 </section>
 </section>
 
