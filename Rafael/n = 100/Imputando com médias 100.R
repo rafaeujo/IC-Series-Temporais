@@ -175,6 +175,4 @@ ts.plot(mAR02a.100)
 ts.plot(mAR02c.100)
 ts.plot(ARMA11a.100)
 
-##Salvando tabela
 
-write.csv(mtabelaARGeral.100, "cemmedia.csv")
