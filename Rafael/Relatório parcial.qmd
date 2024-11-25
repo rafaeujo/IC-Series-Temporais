@@ -109,6 +109,17 @@ Na Tabela 3, foi identificado o mesmo padrão de aumento da distância entre as 
 
 Em relação à imputação pela média e pela mediana, o método LOCF resultou em um aumento do RMSE na maioria das combinações de porcentagens de dados faltantes e ajustes. A única exceção foi no ajuste AR(2) $(\phi_1=0.2, \phi_2=0.4)$, onde o LOCF teve desempenho superior em todas as porcentagens de dados faltantes, exceto em 40%, onde o RMSE foi semelhante ao dos demais métodos. Além disso, observou-se que, com o LOCF, os valores do RMSE tendiam a crescer de forma mais acentuada conforme aumentavam as porcentagens de dados faltantes.
 
+```{r}
+cemup <- read.csv("Planilhas/cemup.csv")
+ajustetabela(cemdown,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
+```
+
+------------------------------------------------------------------------
+
+**Tabela 4:** Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método NOCB (n = 100)
+
+(Interpretação)
+
 ### Amostras de 1000 observações:
 
 ```{r}
@@ -119,9 +130,9 @@ ajustetabela(milmedia,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","A
 
 ------------------------------------------------------------------------
 
-**Tabela 4:** Resultados dos cálculos do RMSE com dados faltantes foram substituidos pela média (n=1000).
+**Tabela 5:** Resultados dos cálculos do RMSE com dados faltantes foram substituidos pela média (n=1000).
 
-A Tabela 4 mostra que, com o aumento do percentual de dados faltantes nas séries ajustadas, os valores da raiz do erro quadrático médio (RMSE) também se elevam. Esse comportamento sugere que o método de imputação gera séries progressivamente mais distantes da série original à medida que cresce a quantidade de dados ausentes.
+A Tabela 5 mostra que, com o aumento do percentual de dados faltantes nas séries ajustadas, os valores da raiz do erro quadrático médio (RMSE) também se elevam. Esse comportamento sugere que o método de imputação gera séries progressivamente mais distantes da série original à medida que cresce a quantidade de dados ausentes.
 
 Diferentemente dos resultados obtidos na imputação pela média com 100 observações, nesta análise o aumento da complexidade do ajuste ocasiona valores mais divergentes. Destaca-se que, no modelo mais elaborado (AR(2) com $\phi=0.4$ e $\phi=0.5$), houve um crescimento expressivo no RMSE em relação aos demais modelos em todas as porcentagens avaliadas. Esse padrão sugere que a complexidade do modelo pode influenciar negativamente a precisão das previsões.
 
@@ -132,9 +143,9 @@ ajustetabela(milmediana,"AR.Rmse.04.med","AR.Rmse.06.med","AR.Rmse.0204.med","AR
 
 ------------------------------------------------------------------------
 
-**Tabela 5:** Resultados dos cálculos do RMSE com dados faltantes foram substituidos pela mediana (n=1000)
+**Tabela 6:** Resultados dos cálculos do RMSE com dados faltantes foram substituidos pela mediana (n=1000)
 
-Na Tabela 5 é possível observar novamente que não há diferença clara entre os métodos de imputação pela média e pela mediana. As considerações feitas à respeito da Tabela 4 também são válidas para a Tabela 5.
+Na Tabela 6 é possível observar novamente que não há diferença clara entre os métodos de imputação pela média e pela mediana. As considerações feitas à respeito da Tabela 5 também são válidas para a Tabela 6.
 
 ```{r}
 mildown <- read.csv("Planilhas/mildown.csv")
@@ -143,26 +154,37 @@ ajustetabela(mildown,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","AR
 
 ------------------------------------------------------------------------
 
-**Tabela 6:** Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método LOCF (n = 1000)
+**Tabela 7:** Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método LOCF (n = 1000)
 
-A Tabela 6 apresentou um padrão de comportamento do RMSE semelhante ao observado na comparação entre o método LOCF e as imputações por média e mediana com 100 observações. O aumento geral do RMSE, previamente identificado nas simulações com $n=1000$, também foi constatado nesta análise.
+A Tabela 7 apresentou um padrão de comportamento do RMSE semelhante ao observado na comparação entre o método LOCF e as imputações por média e mediana com 100 observações. O aumento geral do RMSE, previamente identificado nas simulações com $n=1000$, também foi constatado nesta análise.
 
 Destaca-se uma redução significativa do RMSE no ajuste AR(2) ($\phi_1=0.2, \phi_2=0.4$), em linha com o que já havia sido observado na simulação com $n=100$. No entanto, nesta simulação, essa redução também foi registrada no ajuste AR(2) $(\phi_1=0.4,  \phi_2=0.5)$, que apresentou RMSE inferior ao das imputações por média e mediana em todas as porcentagens avaliadas. Apesar disso, este ajuste teve desempenho inferior aos demais da mesma simulação, refletindo o impacto negativo de seu alto grau de complexidade.
+
+```{r}
+milup <- read.csv("Planilhas/milup.csv")
+ajustetabela(milup,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
+```
+
+------------------------------------------------------------------------
+
+**Tabela 8:** Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método NOCB (n = 1000)
+
+(Análises)
 
 ## Visualização gráfica das imputações
 
 Para visualização da imputação dos dados faltantes na série foram gerados gráficos das séries temporais ARMA(1,1)$(\phi=0.2, \theta=0,4)$ com 10% de dados faltantes, onde os trechos coloridos representam os dados imputados.
 
-![](Gráficos/Gráfico Imputação com média.png){fig-align="center"}
+![](Gráficos/Gráfico%20Imputação%20com%20média.png){fig-align="center"}
 
 ------------------------------------------------------------------------
 
-![](Gráficos/Grafico imputação mediana.png)
+![](Gráficos/Grafico%20imputação%20mediana.png)
 
 ------------------------------------------------------------------------
 
-![](Gráficos/Imputação com LOCF down.png)
+![](Gráficos/Imputação%20com%20LOCF%20down.png)
 
 ------------------------------------------------------------------------
 
-![](Gráficos/Imputação com NOCB.png)
+![](Gráficos/Imputação%20com%20NOCB.png)

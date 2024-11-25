@@ -190,7 +190,7 @@ pontos_imputacao <- data.frame(
 ggplot(dados, aes(x = Tempo, y = Observacao, color = Tipo)) +
   geom_line(size = 1) +
   geom_point(data = pontos_imputacao, aes(x = Tempo, y = Observacao), color = "green", size = 2) +
-  labs(title = "Imputação com LOCF UP", x = "Tempo", y = "Observações") +
+  labs(title = "Imputação com NOCB", x = "Tempo", y = "Observações") +
   scale_color_manual(values = c("Original" = "black", "Imputada" = "green")) +
   theme_minimal() +
   theme(legend.title = element_blank())

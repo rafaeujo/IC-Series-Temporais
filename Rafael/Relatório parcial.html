@@ -401,14 +401,80 @@ Para os modelos LOCF (Last Observation Carried Forward) e NOCB (Next Observation
 <p><strong>Tabela 3:</strong> Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método LOCF (n = 100)</p>
 <p>Na Tabela 3, foi identificado o mesmo padrão de aumento da distância entre as séries com imputações e as séries originais à medida que a porcentagem de dados faltantes aumentava. Observou-se um comportamento semelhante ao dos demais métodos de imputação em relação ao aumento da complexidade dos ajustes. No entanto, destaca-se que, no ajuste AR(2) <span class="math inline">\((\phi_1=0.2, \phi_2=0.4)\)</span>, o método LOCF apresentou desempenho significativamente melhor em comparação com os outros ajustes.</p>
 <p>Em relação à imputação pela média e pela mediana, o método LOCF resultou em um aumento do RMSE na maioria das combinações de porcentagens de dados faltantes e ajustes. A única exceção foi no ajuste AR(2) <span class="math inline">\((\phi_1=0.2, \phi_2=0.4)\)</span>, onde o LOCF teve desempenho superior em todas as porcentagens de dados faltantes, exceto em 40%, onde o RMSE foi semelhante ao dos demais métodos. Além disso, observou-se que, com o LOCF, os valores do RMSE tendiam a crescer de forma mais acentuada conforme aumentavam as porcentagens de dados faltantes.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>cemup <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/cemup.csv"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(cemdown,<span class="st">"AR.Rmse.04"</span>,<span class="st">"AR.Rmse.06"</span>,<span class="st">"AR.Rmse.0204"</span>,<span class="st">"AR.Rmse.0405"</span>,<span class="st">"ARMA.Rmse.0402"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Porcentagem</th>
+<th style="text-align: right;">AR_0.4</th>
+<th style="text-align: right;">AR_0.6</th>
+<th style="text-align: right;">AR_0.2_0.4</th>
+<th style="text-align: right;">AR_0.4_0.5</th>
+<th style="text-align: right;">ARMA_0.4_0.2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.2811430</td>
+<td style="text-align: right;">0.3922194</td>
+<td style="text-align: right;">0.1801501</td>
+<td style="text-align: right;">0.1923050</td>
+<td style="text-align: right;">0.3409044</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.3189514</td>
+<td style="text-align: right;">0.4801306</td>
+<td style="text-align: right;">0.1981648</td>
+<td style="text-align: right;">0.4239092</td>
+<td style="text-align: right;">0.3932324</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0.5615312</td>
+<td style="text-align: right;">0.6840932</td>
+<td style="text-align: right;">0.4562173</td>
+<td style="text-align: right;">0.7876901</td>
+<td style="text-align: right;">0.5994673</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">0.7089940</td>
+<td style="text-align: right;">0.8710560</td>
+<td style="text-align: right;">0.7441356</td>
+<td style="text-align: right;">1.0883977</td>
+<td style="text-align: right;">0.8507686</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<hr>
+<p><strong>Tabela 4:</strong> Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método NOCB (n = 100)</p>
+<p>(Interpretação)</p>
 </section>
 <section id="amostras-de-1000-observações" class="level3">
 <h3 class="anchored" data-anchor-id="amostras-de-1000-observações">Amostras de 1000 observações:</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>milmedia <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/milmedia.csv"</span>)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(milmedia,<span class="st">"AR.Rmse.04"</span>,<span class="st">"AR.Rmse.06"</span>,<span class="st">"AR.Rmse.0204"</span>,<span class="st">"AR.Rmse.0405"</span>,<span class="st">"ARMA.Rmse.0402"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>milmedia <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/milmedia.csv"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(milmedia,<span class="st">"AR.Rmse.04"</span>,<span class="st">"AR.Rmse.06"</span>,<span class="st">"AR.Rmse.0204"</span>,<span class="st">"AR.Rmse.0405"</span>,<span class="st">"ARMA.Rmse.0402"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -468,14 +534,14 @@ Para os modelos LOCF (Last Observation Carried Forward) e NOCB (Next Observation
 </div>
 </div>
 <hr>
-<p><strong>Tabela 4:</strong> Resultados dos cálculos do RMSE com dados faltantes foram substituidos pela média (n=1000).</p>
-<p>A Tabela 4 mostra que, com o aumento do percentual de dados faltantes nas séries ajustadas, os valores da raiz do erro quadrático médio (RMSE) também se elevam. Esse comportamento sugere que o método de imputação gera séries progressivamente mais distantes da série original à medida que cresce a quantidade de dados ausentes.</p>
+<p><strong>Tabela 5:</strong> Resultados dos cálculos do RMSE com dados faltantes foram substituidos pela média (n=1000).</p>
+<p>A Tabela 5 mostra que, com o aumento do percentual de dados faltantes nas séries ajustadas, os valores da raiz do erro quadrático médio (RMSE) também se elevam. Esse comportamento sugere que o método de imputação gera séries progressivamente mais distantes da série original à medida que cresce a quantidade de dados ausentes.</p>
 <p>Diferentemente dos resultados obtidos na imputação pela média com 100 observações, nesta análise o aumento da complexidade do ajuste ocasiona valores mais divergentes. Destaca-se que, no modelo mais elaborado (AR(2) com <span class="math inline">\(\phi=0.4\)</span> e <span class="math inline">\(\phi=0.5\)</span>), houve um crescimento expressivo no RMSE em relação aos demais modelos em todas as porcentagens avaliadas. Esse padrão sugere que a complexidade do modelo pode influenciar negativamente a precisão das previsões.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>milmediana <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/milmediana.csv"</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(milmediana,<span class="st">"AR.Rmse.04.med"</span>,<span class="st">"AR.Rmse.06.med"</span>,<span class="st">"AR.Rmse.0204.med"</span>,<span class="st">"AR.Rmse.0405.med"</span>,<span class="st">"ARMA.Rmse.0402.med"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>milmediana <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/milmediana.csv"</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(milmediana,<span class="st">"AR.Rmse.04.med"</span>,<span class="st">"AR.Rmse.06.med"</span>,<span class="st">"AR.Rmse.0204.med"</span>,<span class="st">"AR.Rmse.0405.med"</span>,<span class="st">"ARMA.Rmse.0402.med"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -535,13 +601,13 @@ Para os modelos LOCF (Last Observation Carried Forward) e NOCB (Next Observation
 </div>
 </div>
 <hr>
-<p><strong>Tabela 5:</strong> Resultados dos cálculos do RMSE com dados faltantes foram substituidos pela mediana (n=1000)</p>
-<p>Na Tabela 5 é possível observar novamente que não há diferença clara entre os métodos de imputação pela média e pela mediana. As considerações feitas à respeito da Tabela 4 também são válidas para a Tabela 5.</p>
+<p><strong>Tabela 6:</strong> Resultados dos cálculos do RMSE com dados faltantes foram substituidos pela mediana (n=1000)</p>
+<p>Na Tabela 6 é possível observar novamente que não há diferença clara entre os métodos de imputação pela média e pela mediana. As considerações feitas à respeito da Tabela 5 também são válidas para a Tabela 6.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>mildown <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/mildown.csv"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(mildown,<span class="st">"AR.Rmse.04"</span>,<span class="st">"AR.Rmse.06"</span>,<span class="st">"AR.Rmse.0204"</span>,<span class="st">"AR.Rmse.0405"</span>,<span class="st">"ARMA.Rmse.0402"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mildown <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/mildown.csv"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(mildown,<span class="st">"AR.Rmse.04"</span>,<span class="st">"AR.Rmse.06"</span>,<span class="st">"AR.Rmse.0204"</span>,<span class="st">"AR.Rmse.0405"</span>,<span class="st">"ARMA.Rmse.0402"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -601,9 +667,75 @@ Para os modelos LOCF (Last Observation Carried Forward) e NOCB (Next Observation
 </div>
 </div>
 <hr>
-<p><strong>Tabela 6:</strong> Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método LOCF (n = 1000)</p>
-<p>A Tabela 6 apresentou um padrão de comportamento do RMSE semelhante ao observado na comparação entre o método LOCF e as imputações por média e mediana com 100 observações. O aumento geral do RMSE, previamente identificado nas simulações com <span class="math inline">\(n=1000\)</span>, também foi constatado nesta análise.</p>
+<p><strong>Tabela 7:</strong> Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método LOCF (n = 1000)</p>
+<p>A Tabela 7 apresentou um padrão de comportamento do RMSE semelhante ao observado na comparação entre o método LOCF e as imputações por média e mediana com 100 observações. O aumento geral do RMSE, previamente identificado nas simulações com <span class="math inline">\(n=1000\)</span>, também foi constatado nesta análise.</p>
 <p>Destaca-se uma redução significativa do RMSE no ajuste AR(2) (<span class="math inline">\(\phi_1=0.2, \phi_2=0.4\)</span>), em linha com o que já havia sido observado na simulação com <span class="math inline">\(n=100\)</span>. No entanto, nesta simulação, essa redução também foi registrada no ajuste AR(2) <span class="math inline">\((\phi_1=0.4,  \phi_2=0.5)\)</span>, que apresentou RMSE inferior ao das imputações por média e mediana em todas as porcentagens avaliadas. Apesar disso, este ajuste teve desempenho inferior aos demais da mesma simulação, refletindo o impacto negativo de seu alto grau de complexidade.</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>milup <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/milup.csv"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(milup,<span class="st">"AR.Rmse.04"</span>,<span class="st">"AR.Rmse.06"</span>,<span class="st">"AR.Rmse.0204"</span>,<span class="st">"AR.Rmse.0405"</span>,<span class="st">"ARMA.Rmse.0402"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<colgroup>
+<col style="width: 17%">
+<col style="width: 14%">
+<col style="width: 14%">
+<col style="width: 16%">
+<col style="width: 16%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">Porcentagem</th>
+<th style="text-align: right;">AR_0.4</th>
+<th style="text-align: right;">AR_0.6</th>
+<th style="text-align: right;">AR_0.2_0.4</th>
+<th style="text-align: right;">AR_0.4_0.5</th>
+<th style="text-align: right;">ARMA_0.4_0.2</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">0.2761077</td>
+<td style="text-align: right;">0.2049902</td>
+<td style="text-align: right;">0.2559661</td>
+<td style="text-align: right;">0.2664016</td>
+<td style="text-align: right;">0.2836093</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">0.3888442</td>
+<td style="text-align: right;">0.3330139</td>
+<td style="text-align: right;">0.3855374</td>
+<td style="text-align: right;">0.3872747</td>
+<td style="text-align: right;">0.4356191</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">0.5867092</td>
+<td style="text-align: right;">0.5400304</td>
+<td style="text-align: right;">0.5359320</td>
+<td style="text-align: right;">0.6513307</td>
+<td style="text-align: right;">0.6138997</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">40</td>
+<td style="text-align: right;">0.9128088</td>
+<td style="text-align: right;">0.8432034</td>
+<td style="text-align: right;">0.7856316</td>
+<td style="text-align: right;">1.0116014</td>
+<td style="text-align: right;">0.9838729</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<hr>
+<p><strong>Tabela 8:</strong> Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método NOCB (n = 1000)</p>
+<p>(Análises)</p>
 </section>
 </section>
 <section id="visualização-gráfica-das-imputações" class="level2">
