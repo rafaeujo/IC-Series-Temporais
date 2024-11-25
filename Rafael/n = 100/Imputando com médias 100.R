@@ -175,4 +175,4 @@ ts.plot(mAR02a.100)
 ts.plot(mAR02c.100)
 ts.plot(ARMA11a.100)
 
-
+write.csv(mtabelaARGeral.100,file ="cemedia.csv", row.names = FALSE)
