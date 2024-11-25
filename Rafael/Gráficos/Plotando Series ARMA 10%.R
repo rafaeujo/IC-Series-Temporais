@@ -80,20 +80,21 @@ ggplot(dados, aes(x = Tempo, y = Observacao, color = Tipo)) +
   theme_minimal() +
   theme(legend.title = element_blank())
 
-#Imputação usando LOCF
+#Imputação usando LOCF (Down)
 
-# Imputação LOCF (Last Observation Carried Forward)
+# Imputação LOCF (Last Observation Carried Forward) (Down)
 serie_imputada <- miss10_ARMA1.100$Dado
 for (i in 2:length(serie_imputada)) {
   if (is.na(serie_imputada[i])) {
     serie_imputada[i] <- serie_imputada[i - 1]
   }
 }
+serie_imputada[is.na(serie_imputada)] <- mean(miss10_ARMA1.100$Coluna.controle, na.rm = TRUE)
 
 # Criar um dataframe com as séries original e imputada
 dados <- data.frame(
   Tempo = 1:length(miss10_ARMA1.100$Dado),
-  Observacao = c(miss10_ARMA1.100$Dado, serie_imputada),
+  Observacao =  c(miss10_ARMA1.100$Dado, serie_imputada),
   Tipo = rep(c("Original", "Imputada"), each = length(miss10_ARMA1.100$Dado))
 )
 
