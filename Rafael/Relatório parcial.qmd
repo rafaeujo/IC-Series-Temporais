@@ -118,7 +118,43 @@ ajustetabela(cemdown,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","AR
 
 **Tabela 4:** Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método NOCB (n = 100)
 
-(Interpretação)
+```{r}
+difference_dataframes <- function(df1, df2) {
+  # Verifica se os dataframes têm as mesmas dimensões
+  if (!all(dim(df1) == dim(df2))) {
+    stop("Os dataframes devem ter as mesmas dimensões.")
+  }
+  
+  # Verifica se ambos são dataframes
+  if (!is.data.frame(df1) || !is.data.frame(df2)) {
+    stop("Ambos os inputs devem ser dataframes.")
+  }
+  
+  # Retorna um dataframe com a diferença df1 - df2
+  result <- as.data.frame(mapply(function(col1, col2) {
+    col1 - col2
+  }, df1, df2))
+  
+  colnames(result) <- colnames(df1) # Mantém os nomes das colunas
+  rownames(result) <- rownames(df1) # Mantém os nomes das linhas
+  result <- result %>% 
+    select(-Porcentagem)
+  ajustetabela(result,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
+  
+  return(kable(result))
+}
+
+difference_dataframes(cemmedia, cemup)
+difference_dataframes(cemdown, cemup)
+
+
+```
+
+------------------------------------------------------------------------
+
+Na Tabela 4 são apresentados os valores do RMSE obtidos com a substituição dos dados faltantes pelo método NOCB. O comportamento em relação ao aumento da porcentagem de dados faltantes segue o padrão observado em outros métodos de imputação. No entanto, em relação à complexidade dos modelos, o NOCB gerou resultados distintos. Por exemplo, o modelo AR0204 apresentou desempenho superior ao AR06 em todas as porcentagens de dados faltantes.
+
+Comparando com os métodos de imputação pela média e mediana, houve uma redução do RMSE nos testes com 40% de dados faltantes na maioria das porcentagens, exceto no modelo ARMA, onde os resultados foram praticamente iguais. Em relação ao método LOCF, os resultados para os modelos AR04 e AR0204 foram melhores, enquanto os modelos AR06 e AR0405 apresentaram erros maiores. No geral, não é possível afirmar que o método NOCB se destaca como superior aos demais métodos de imputação.
 
 ### Amostras de 1000 observações:
 
@@ -165,11 +201,19 @@ milup <- read.csv("Planilhas/milup.csv")
 ajustetabela(milup,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
 ```
 
+```{r}
+difference_dataframes(milmedia, milup)
+difference_dataframes(mildown, milup)
+difference_dataframes(cemup,milup)
+```
+
 ------------------------------------------------------------------------
 
 **Tabela 8:** Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método NOCB (n = 1000)
 
-(Análises)
+O comportamento dos resultados do RMSE utilizando o método de imputação NOCB para 1000 observações, representado na Tabela 8, é semelhante ao dos demais métodos no que se refere à reação da métrica ao aumento da porcentagem de dados faltantes. O destaque desse método está na "estabilidade" observada nos valores do RMSE entre os diferentes tipos de ajustes. Diferentemente do observado em outras simulações, especialmente nas realizadas com 100 observações, o método NOCB para $n=1000$ apresentou valores de RMSE muito próximos entre os ajustes. Uma variação mais acentuada foi percebida apenas para 40% de dados faltantes.
+
+Em comparação ao método de imputação pela média, o NOCB apresentou desempenho superior nos modelos AR04 e ARMA, mas foi consideravelmente inferior no modelo AR0405. Já em relação ao método LOCF, o NOCB apresentou resultados semelhantes no modelo ARMA e ligeiramente melhores no AR0204, porém teve desempenho inferior em todos os outros modelos.
 
 ## Visualização gráfica das imputações
 

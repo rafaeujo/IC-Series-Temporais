@@ -466,15 +466,138 @@ Para os modelos LOCF (Last Observation Carried Forward) e NOCB (Next Observation
 </div>
 <hr>
 <p><strong>Tabela 4:</strong> Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método NOCB (n = 100)</p>
-<p>(Interpretação)</p>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>difference_dataframes <span class="ot">&lt;-</span> <span class="cf">function</span>(df1, df2) {</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Verifica se os dataframes têm as mesmas dimensões</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">all</span>(<span class="fu">dim</span>(df1) <span class="sc">==</span> <span class="fu">dim</span>(df2))) {</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Os dataframes devem ter as mesmas dimensões."</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Verifica se ambos são dataframes</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.data.frame</span>(df1) <span class="sc">||</span> <span class="sc">!</span><span class="fu">is.data.frame</span>(df2)) {</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Ambos os inputs devem ser dataframes."</span>)</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Retorna um dataframe com a diferença df1 - df2</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">mapply</span>(<span class="cf">function</span>(col1, col2) {</span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>    col1 <span class="sc">-</span> col2</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>  }, df1, df2))</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">colnames</span>(result) <span class="ot">&lt;-</span> <span class="fu">colnames</span>(df1) <span class="co"># Mantém os nomes das colunas</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rownames</span>(result) <span class="ot">&lt;-</span> <span class="fu">rownames</span>(df1) <span class="co"># Mantém os nomes das linhas</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> result <span class="sc">%&gt;%</span> </span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">select</span>(<span class="sc">-</span>Porcentagem)</span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ajustetabela</span>(result,<span class="st">"AR.Rmse.04"</span>,<span class="st">"AR.Rmse.06"</span>,<span class="st">"AR.Rmse.0204"</span>,<span class="st">"AR.Rmse.0405"</span>,<span class="st">"ARMA.Rmse.0402"</span>)</span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">kable</span>(result))</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a><span class="fu">difference_dataframes</span>(cemmedia, cemup)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">AR.Rmse.04</th>
+<th style="text-align: right;">AR.Rmse.06</th>
+<th style="text-align: right;">AR.Rmse.0204</th>
+<th style="text-align: right;">AR.Rmse.0405</th>
+<th style="text-align: right;">ARMA.Rmse.0402</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.0478028</td>
+<td style="text-align: right;">0.2224618</td>
+<td style="text-align: right;">-0.0550016</td>
+<td style="text-align: right;">-0.1440255</td>
+<td style="text-align: right;">0.1319509</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0567363</td>
+<td style="text-align: right;">0.1178690</td>
+<td style="text-align: right;">-0.0233553</td>
+<td style="text-align: right;">0.0210286</td>
+<td style="text-align: right;">-0.1442305</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0899160</td>
+<td style="text-align: right;">-0.0180008</td>
+<td style="text-align: right;">0.0731389</td>
+<td style="text-align: right;">0.0634983</td>
+<td style="text-align: right;">-0.1931563</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.2505411</td>
+<td style="text-align: right;">-0.0906200</td>
+<td style="text-align: right;">-0.0093967</td>
+<td style="text-align: right;">-0.0907629</td>
+<td style="text-align: right;">0.0028284</td>
+</tr>
+</tbody>
+</table>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">difference_dataframes</span>(cemdown, cemup)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">AR.Rmse.04</th>
+<th style="text-align: right;">AR.Rmse.06</th>
+<th style="text-align: right;">AR.Rmse.0204</th>
+<th style="text-align: right;">AR.Rmse.0405</th>
+<th style="text-align: right;">ARMA.Rmse.0402</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">-0.0602857</td>
+<td style="text-align: right;">0.2998811</td>
+<td style="text-align: right;">-0.0893395</td>
+<td style="text-align: right;">-0.0699763</td>
+<td style="text-align: right;">0.2163590</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0711300</td>
+<td style="text-align: right;">0.2535126</td>
+<td style="text-align: right;">-0.1936079</td>
+<td style="text-align: right;">0.0415693</td>
+<td style="text-align: right;">-0.1323388</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0663251</td>
+<td style="text-align: right;">0.1717569</td>
+<td style="text-align: right;">-0.0353744</td>
+<td style="text-align: right;">0.1948458</td>
+<td style="text-align: right;">-0.0861241</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.2333666</td>
+<td style="text-align: right;">0.0192060</td>
+<td style="text-align: right;">0.0206392</td>
+<td style="text-align: right;">0.0146088</td>
+<td style="text-align: right;">0.0097833</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<hr>
+<p>Na Tabela 4 são apresentados os valores do RMSE obtidos com a substituição dos dados faltantes pelo método NOCB. O comportamento em relação ao aumento da porcentagem de dados faltantes segue o padrão observado em outros métodos de imputação. No entanto, em relação à complexidade dos modelos, o NOCB gerou resultados distintos. Por exemplo, o modelo AR0204 apresentou desempenho superior ao AR06 em todas as porcentagens de dados faltantes.</p>
+<p>Comparando com os métodos de imputação pela média e mediana, houve uma redução do RMSE nos testes com 40% de dados faltantes na maioria das porcentagens, exceto no modelo ARMA, onde os resultados foram praticamente iguais. Em relação ao método LOCF, os resultados para os modelos AR04 e AR0204 foram melhores, enquanto os modelos AR06 e AR0405 apresentaram erros maiores. No geral, não é possível afirmar que o método NOCB se destaca como superior aos demais métodos de imputação.</p>
 </section>
 <section id="amostras-de-1000-observações" class="level3">
 <h3 class="anchored" data-anchor-id="amostras-de-1000-observações">Amostras de 1000 observações:</h3>
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>milmedia <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/milmedia.csv"</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(milmedia,<span class="st">"AR.Rmse.04"</span>,<span class="st">"AR.Rmse.06"</span>,<span class="st">"AR.Rmse.0204"</span>,<span class="st">"AR.Rmse.0405"</span>,<span class="st">"ARMA.Rmse.0402"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>milmedia <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/milmedia.csv"</span>)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(milmedia,<span class="st">"AR.Rmse.04"</span>,<span class="st">"AR.Rmse.06"</span>,<span class="st">"AR.Rmse.0204"</span>,<span class="st">"AR.Rmse.0405"</span>,<span class="st">"ARMA.Rmse.0402"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -540,8 +663,8 @@ Para os modelos LOCF (Last Observation Carried Forward) e NOCB (Next Observation
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>milmediana <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/milmediana.csv"</span>)</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(milmediana,<span class="st">"AR.Rmse.04.med"</span>,<span class="st">"AR.Rmse.06.med"</span>,<span class="st">"AR.Rmse.0204.med"</span>,<span class="st">"AR.Rmse.0405.med"</span>,<span class="st">"ARMA.Rmse.0402.med"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>milmediana <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/milmediana.csv"</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(milmediana,<span class="st">"AR.Rmse.04.med"</span>,<span class="st">"AR.Rmse.06.med"</span>,<span class="st">"AR.Rmse.0204.med"</span>,<span class="st">"AR.Rmse.0405.med"</span>,<span class="st">"ARMA.Rmse.0402.med"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -606,8 +729,8 @@ Para os modelos LOCF (Last Observation Carried Forward) e NOCB (Next Observation
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>mildown <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/mildown.csv"</span>)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(mildown,<span class="st">"AR.Rmse.04"</span>,<span class="st">"AR.Rmse.06"</span>,<span class="st">"AR.Rmse.0204"</span>,<span class="st">"AR.Rmse.0405"</span>,<span class="st">"ARMA.Rmse.0402"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>mildown <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/mildown.csv"</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(mildown,<span class="st">"AR.Rmse.04"</span>,<span class="st">"AR.Rmse.06"</span>,<span class="st">"AR.Rmse.0204"</span>,<span class="st">"AR.Rmse.0405"</span>,<span class="st">"ARMA.Rmse.0402"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -673,8 +796,8 @@ Para os modelos LOCF (Last Observation Carried Forward) e NOCB (Next Observation
 <div class="cell">
 <details class="code-fold">
 <summary>Código</summary>
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>milup <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/milup.csv"</span>)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(milup,<span class="st">"AR.Rmse.04"</span>,<span class="st">"AR.Rmse.06"</span>,<span class="st">"AR.Rmse.0204"</span>,<span class="st">"AR.Rmse.0405"</span>,<span class="st">"ARMA.Rmse.0402"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>milup <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"Planilhas/milup.csv"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ajustetabela</span>(milup,<span class="st">"AR.Rmse.04"</span>,<span class="st">"AR.Rmse.06"</span>,<span class="st">"AR.Rmse.0204"</span>,<span class="st">"AR.Rmse.0405"</span>,<span class="st">"ARMA.Rmse.0402"</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -733,9 +856,153 @@ Para os modelos LOCF (Last Observation Carried Forward) e NOCB (Next Observation
 </table>
 </div>
 </div>
+<div class="cell">
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">difference_dataframes</span>(milmedia, milup)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">AR.Rmse.04</th>
+<th style="text-align: right;">AR.Rmse.06</th>
+<th style="text-align: right;">AR.Rmse.0204</th>
+<th style="text-align: right;">AR.Rmse.0405</th>
+<th style="text-align: right;">ARMA.Rmse.0402</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">-0.0403751</td>
+<td style="text-align: right;">0.0468638</td>
+<td style="text-align: right;">0.0010554</td>
+<td style="text-align: right;">0.1357765</td>
+<td style="text-align: right;">0.0592758</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.0438800</td>
+<td style="text-align: right;">0.0335045</td>
+<td style="text-align: right;">-0.0057938</td>
+<td style="text-align: right;">0.1880090</td>
+<td style="text-align: right;">-0.0076416</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0932552</td>
+<td style="text-align: right;">-0.0439681</td>
+<td style="text-align: right;">0.0028285</td>
+<td style="text-align: right;">0.1554507</td>
+<td style="text-align: right;">-0.0471687</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-0.2146531</td>
+<td style="text-align: right;">-0.0870886</td>
+<td style="text-align: right;">-0.0678370</td>
+<td style="text-align: right;">0.2796173</td>
+<td style="text-align: right;">-0.2301609</td>
+</tr>
+</tbody>
+</table>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">difference_dataframes</span>(mildown, milup)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">AR.Rmse.04</th>
+<th style="text-align: right;">AR.Rmse.06</th>
+<th style="text-align: right;">AR.Rmse.0204</th>
+<th style="text-align: right;">AR.Rmse.0405</th>
+<th style="text-align: right;">ARMA.Rmse.0402</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.0113249</td>
+<td style="text-align: right;">0.0857060</td>
+<td style="text-align: right;">-0.0398803</td>
+<td style="text-align: right;">0.1101945</td>
+<td style="text-align: right;">-0.0572044</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0347595</td>
+<td style="text-align: right;">0.0969407</td>
+<td style="text-align: right;">-0.0496724</td>
+<td style="text-align: right;">0.0729951</td>
+<td style="text-align: right;">-0.0243712</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0.0138930</td>
+<td style="text-align: right;">0.0647936</td>
+<td style="text-align: right;">-0.0607846</td>
+<td style="text-align: right;">0.0543689</td>
+<td style="text-align: right;">0.0021395</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0111071</td>
+<td style="text-align: right;">0.0852643</td>
+<td style="text-align: right;">-0.0129222</td>
+<td style="text-align: right;">0.1440532</td>
+<td style="text-align: right;">0.0521626</td>
+</tr>
+</tbody>
+</table>
+</div>
+<details class="code-fold">
+<summary>Código</summary>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">difference_dataframes</span>(cemup,milup)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th style="text-align: right;">AR.Rmse.04</th>
+<th style="text-align: right;">AR.Rmse.06</th>
+<th style="text-align: right;">AR.Rmse.0204</th>
+<th style="text-align: right;">AR.Rmse.0405</th>
+<th style="text-align: right;">ARMA.Rmse.0402</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">0.0653211</td>
+<td style="text-align: right;">-0.1126520</td>
+<td style="text-align: right;">0.0135235</td>
+<td style="text-align: right;">-0.0041204</td>
+<td style="text-align: right;">-0.1590639</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0012372</td>
+<td style="text-align: right;">-0.1063960</td>
+<td style="text-align: right;">0.0062354</td>
+<td style="text-align: right;">-0.0049348</td>
+<td style="text-align: right;">0.0899521</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-0.0915032</td>
+<td style="text-align: right;">-0.0276941</td>
+<td style="text-align: right;">-0.0443403</td>
+<td style="text-align: right;">-0.0584865</td>
+<td style="text-align: right;">0.0716916</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0.0295518</td>
+<td style="text-align: right;">0.0086466</td>
+<td style="text-align: right;">-0.0621352</td>
+<td style="text-align: right;">0.0621875</td>
+<td style="text-align: right;">-0.1428877</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
 <hr>
 <p><strong>Tabela 8:</strong> Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método NOCB (n = 1000)</p>
-<p>(Análises)</p>
+<p>O comportamento dos resultados do RMSE utilizando o método de imputação NOCB para 1000 observações, representado na Tabela 8, é semelhante ao dos demais métodos no que se refere à reação da métrica ao aumento da porcentagem de dados faltantes. O destaque desse método está na “estabilidade” observada nos valores do RMSE entre os diferentes tipos de ajustes. Diferentemente do observado em outras simulações, especialmente nas realizadas com 100 observações, o método NOCB para <span class="math inline">\(n=1000\)</span> apresentou valores de RMSE muito próximos entre os ajustes. Uma variação mais acentuada foi percebida apenas para 40% de dados faltantes.</p>
+<p>Em comparação ao método de imputação pela média, o NOCB apresentou desempenho superior nos modelos AR04 e ARMA, mas foi consideravelmente inferior no modelo AR0405. Já em relação ao método LOCF, o NOCB apresentou resultados semelhantes no modelo ARMA e ligeiramente melhores no AR0204, porém teve desempenho inferior em todos os outros modelos.</p>
 </section>
 </section>
 <section id="visualização-gráfica-das-imputações" class="level2">
