@@ -15,6 +15,20 @@ miss10_ARMA1.100 <- delete_MAR_censoring(mdataARMA1.100, 0.10, "Dado", cols_ctrl
 
 #Plotando a série bonitinha
 
+#Original
+
+# Criar um dataframe apenas para a série original simulada
+dados_original_simulado <- data.frame(
+  Tempo = 1:length(ARMA11a.100),
+  Observacao = ARMA11a.100
+)
+
+# Criar o gráfico para a série original simulada
+ggplot(dados_original_simulado, aes(x = Tempo, y = Observacao)) +
+  geom_line(color = "black", size = 1) +
+  labs(title = "Série Original Simulada", x = "Tempo", y = "Observações") +
+  theme_minimal()
+
 #Média
 # Carregar a biblioteca ggplot2
 library(ggplot2)
@@ -115,3 +129,38 @@ ggplot(dados, aes(x = Tempo, y = Observacao, color = Tipo)) +
   scale_color_manual(values = c("Original" = "black", "Imputada" = "purple")) +
   theme_minimal() +
   theme(legend.title = element_blank())
+
+#Imputação utilizando interpolação cúbica
+
+# Carregar as bibliotecas necessárias
+library(ggplot2)
+library(imputeTS)
+
+# Gerar uma cópia da série com imputação usando interpolação cúbica
+serie_interpolada <- na.interpolation(miss10_ARMA1.100$Dado, option = "spline")
+
+# Criar um dataframe com as séries original e imputada
+dados_interpolados <- data.frame(
+  Tempo = 1:length(miss10_ARMA1.100$Dado),
+  Observacao = c(miss10_ARMA1.100$Dado, serie_interpolada),
+  Tipo = rep(c("Original", "Interpolada"), each = length(miss10_ARMA1.100$Dado))
+)
+
+# Corrigir o vetor da série interpolada para manter os valores originais quando não há imputação
+dados_interpolados$Observacao[dados_interpolados$Tipo == "Interpolada" & is.na(miss10_ARMA1.100$Dado)] <- serie_interpolada[is.na(miss10_ARMA1.100$Dado)]
+
+# Identificar os pontos imputados
+pontos_interpolacao <- data.frame(
+  Tempo = which(is.na(miss10_ARMA1.100$Dado)),
+  Observacao = serie_interpolada[is.na(miss10_ARMA1.100$Dado)]
+)
+
+# Criar o gráfico com ggplot2
+ggplot(dados_interpolados, aes(x = Tempo, y = Observacao, color = Tipo)) +
+  geom_line(size = 1) +
+  geom_point(data = pontos_interpolacao, aes(x = Tempo, y = Observacao), color = "pink", size = 2) +
+  labs(title = "Imputação com Interpolação Cúbica", x = "Tempo", y = "Observações") +
+  scale_color_manual(values = c("Original" = "black", "Interpolada" = "pink")) +
+  theme_minimal() +
+  theme(legend.title = element_blank())
+
