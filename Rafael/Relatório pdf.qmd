@@ -1,17 +1,11 @@
 ---
 title: "Relatório de progresso" # -----> Título
 subtitle: "Iniciação Científica" # -----> Subtítulo
-author: "Rafael Jordane" # -----> Autoria
-date: "2024-09-29" # -----> Data de publicação
-date-format: short # -----> Formato de data curto: dd/mm/aaaa
-lang: pt # -----> Linguagem: português
-format: 
-  html:  
-    code-fold: true # -----> code-fold: `true` para "ocultar" o bloco de códigos
-    df_print: paged
-    theme: 
-      light: [pulse,custom.scss]
-title-block-banner: true # -----> Estilo de banner no topo do documento
+author: "Rafael Jordane de Souza Oliveira"
+format: pdf
+execute:
+  echo: false
+editor: visual
 ---
 
 ```{r}
@@ -225,9 +219,6 @@ Em comparação ao método de imputação pela média, o NOCB apresentou desempe
 milinter <-  read.csv("Planilhas/intmil.csv")
 ajustetabela(ceminter,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
 
-difference_dataframes(milmedia,milinter)
-difference_dataframes(mildown,milinter)
-difference_dataframes(milup,milinter)
 ```
 
 ##### **Tabela 10:** Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método NOCB (n = 1000)
