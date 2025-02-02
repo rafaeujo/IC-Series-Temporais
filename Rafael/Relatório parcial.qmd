@@ -87,9 +87,9 @@ A Tabela 1 revela que, à medida que o percentual de dados faltantes nas séries
 Por outro lado, o impacto do aumento da complexidade do ajuste não segue um padrão tão claro. Embora o RMSE tenha aumentado em algumas situações e diminuído em outras, é possível notar uma leve tendência de aumento nos valores do RMSE em todas as porcentagens à medida que os modelos ajustados de séries temporais se tornam mais complexos. Essa variação sugere que a complexidade do modelo pode influenciar a precisão das previsões, mas não de maneira uniforme.
 
 ```{r}
-cemmediana <- read.csv("Planilhas/cemmediana.csv") 
+cemmediana <- read.csv("Planilhas/cemediana.csv") 
 
-ajustetabela(cemmediana,"AR.Rmse.04.med.100","AR.Rmse.06.med.100","AR.Rmse.0204.med.100","AR.Rmse.0405.med.100","ARMA.Rmse.0402.med.100")
+ajustetabela(cemmediana,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
 ```
 
 ##### **Tabela 2:** Resultados dos cálculos do RMSE com dados faltantes foram substituidos pela mediana (n=100).
@@ -103,19 +103,23 @@ Não foi observada uma mudança clara nos resultados que indique influência da 
 ```{r}
 cemdown <- read.csv("Planilhas/cemdown.csv")
 ajustetabela(cemdown,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
+
+
 ```
 
 ------------------------------------------------------------------------
 
 ##### **Tabela 3:** Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método LOCF (n = 100)
 
-Na Tabela 3, foi identificado o mesmo padrão de aumento da distância entre as séries com imputações e as séries originais à medida que a porcentagem de dados faltantes aumentava. Observou-se um comportamento semelhante ao dos demais métodos de imputação em relação ao aumento da complexidade dos ajustes. No entanto, destaca-se que, no ajuste AR(2) $(\phi_1=0.2, \phi_2=0.4)$, o método LOCF apresentou desempenho significativamente melhor em comparação com os outros ajustes.
+Na Tabela 3, foi identificado o mesmo padrão de aumento da distância entre as séries com imputações e as séries originais à medida que a porcentagem de dados faltantes aumentava. Observou-se um comportamento semelhante ao dos demais métodos de imputação em relação ao aumento da complexidade dos ajustes.
 
-Em relação à imputação pela média e pela mediana, o método LOCF resultou em um aumento do RMSE na maioria das combinações de porcentagens de dados faltantes e ajustes. A única exceção foi no ajuste AR(2) $(\phi_1=0.2, \phi_2=0.4)$, onde o LOCF teve desempenho superior em todas as porcentagens de dados faltantes, exceto em 40%, onde o RMSE foi semelhante ao dos demais métodos. Além disso, observou-se que, com o LOCF, os valores do RMSE tendiam a crescer de forma mais acentuada conforme aumentavam as porcentagens de dados faltantes.
+Em relação à imputação pela média e pela mediana, o método LOCF resultou em uma diminuição do RMSE em quase todas as combinações de porcentagens de dados faltantes e ajustes. A melhora foi mais significativa sobretudo nos ajustes de maior complexidade como AR (2)$(\phi=0.4, \phi=0.5)$ e ARMA (1,1)$(\phi=0.2, \theta=0.4)$.
 
 ```{r}
 cemup <- read.csv("Planilhas/cemup.csv")
-ajustetabela(cemdown,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
+ajustetabela(cemup,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
+difference_dataframes(cemup,cemmedia)
+difference_dataframes(cemup,cemdown)
 ```
 
 ------------------------------------------------------------------------
@@ -150,29 +154,32 @@ difference_dataframes <- function(df1, df2) {
 
 ```
 
-Na Tabela 4 são apresentados os valores do RMSE obtidos com a substituição dos dados faltantes pelo método NOCB. O comportamento em relação ao aumento da porcentagem de dados faltantes segue o padrão observado em outros métodos de imputação. No entanto, em relação à complexidade dos modelos, o NOCB gerou resultados distintos.
+Na Tabela 4 são apresentados os valores do RMSE obtidos com a substituição dos dados faltantes pelo método NOCB. O comportamento em relação ao aumento da porcentagem de dados faltantes segue o padrão observado em outros métodos de imputação.
 
-Comparando com os métodos de imputação pela média e mediana, houve uma redução do RMSE nos testes com 40% de dados faltantes na maioria das porcentagens, exceto no modelo ARMA (1,1)$(\phi=0.2, \theta=0.4)$, onde os resultados foram praticamente iguais. Em relação ao método LOCF, os resultados para variaram entre rasoavelmente melhores, rasoavelmente piores e semelhantes. No geral, não é possível afirmar que o método NOCB se destaca como superior aos demais métodos de imputação.
+Comparando com os métodos de imputação pela média e mediana, houve uma redução do RMSE em todas as combinações de porcentagens de dados faltantes e ajustes. Novamente destacou-se a melhora nos ajustes de maior complexidade, principalmente o ajuste AR (2)$(\phi=0.4, \phi=0.5)$. Em relação ao método LOCF, houve melhora significativa na performance no ajuste AR (1)$(\phi=0.6)$ enquanto nos demais ajustes houve melhora sutil ou não houve melhora
 
 ```{r}
-ceminter <-  read.csv("Planilhas/intcem.csv")
+ceminter <-  read.csv("Planilhas/cemint.csv")
 ajustetabela(ceminter,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
 
+difference_dataframes(ceminter, cemmedia)
+difference_dataframes(ceminter, cemup)
 ```
 
 ------------------------------------------------------------------------
 
-##### **Tabela 5:** Resultados dos cálculos do RMSE com dados faltantes substituidos atravéz do método de Interpolação Cúbica (slice) 
+##### **Tabela 5:** Resultados dos cálculos do RMSE com dados faltantes substituidos atravéz do método de Interpolação Cúbica (slice)
 
-A Tabela 5 revela que o padrão de crescimento do RMSE acompanha o aumento da complexidade dos modelos e da porcentagem de dados faltantes, mantendo uma tendência semelhante aos demais métodos de imputação. No caso da Interpolação, os maiores valores de RMSE foram registrados nas proporções mais altas de dados ausentes (20% e 40%), sugerindo uma redução na confiabilidade do método quando há uma quantidade excessiva de valores faltantes. Em contrapartida, nas porcentagens menores (5% e 10%), observou-se maior estabilidade nos RMSE, com desempenho ocasionalmente superior ao de outros métodos, embora sem um padrão consistente.
+A Tabela 5 revela que o padrão de crescimento do RMSE acompanha o aumento da complexidade dos modelos e da porcentagem de dados faltantes, mantendo uma tendência semelhante aos demais métodos de imputação.
 
-De maneira geral, a aplicação da Interpolação Cúbica não demonstrou melhorias significativas nos valores de RMSE em comparação com as outras abordagens de imputação analisadas para $n=100$.
+De maneira geral, a aplicação da Interpolação Cúbica demonstrou melhorias significativas nos valores de RMSE em comparação com a imputação por média e mediana. Em relação ao método NOCB, houve diminuição do RMSE em alguns ajustes mas aumento em outros. Destaca-se que na porcentagem de 20% de dados faltantes, o método da Interpolação Cúbica performou melhor que todos os demais métodos.
 
 ### Amostras de 1000 observações:
 
 ```{r}
 milmedia <- read.csv("Planilhas/milmedia.csv")
 ajustetabela(milmedia,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
+
 
 ```
 
@@ -182,84 +189,89 @@ ajustetabela(milmedia,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","A
 
 A Tabela 6 mostra que, com o aumento do percentual de dados faltantes nas séries ajustadas, os valores da raiz do erro quadrático médio (RMSE) também se elevam. Esse comportamento sugere que o método de imputação gera séries progressivamente mais distantes da série original à medida que cresce a quantidade de dados ausentes.
 
-Diferentemente dos resultados obtidos na imputação pela média com 100 observações, nesta análise o aumento da complexidade do ajuste ocasiona valores mais divergentes. Destaca-se que, no modelo mais elaborado (AR(2) com $\phi=0.4$ e $\phi=0.5$), houve um crescimento expressivo no RMSE em relação aos demais modelos em todas as porcentagens avaliadas. Esse padrão sugere que a complexidade do modelo pode influenciar negativamente a precisão das previsões.
+Diferentemente dos resultados obtidos na imputação pela média com 100 observações, nesta análise houve aumento significativo do RMSE em todas os ajustes com excessão de AR(2) com $\phi=0.2$ e $\phi=0.4$ , que apresentou singela melhora. Destaca-se que, no modelo mais elaborado (AR(2) com $\phi=0.4$ e $\phi=0.5$), houve um crescimento expressivo no RMSE em relação aos demais modelos em todas as porcentagens avaliadas e os testes feitos com 100 observações. Esse padrão sugere que a aumento do número de observações pode influenciar negativamente a precisão das previsões quando utilizado esse método de imputação
 
 ```{r}
 milmediana <- read.csv("Planilhas/milmediana.csv")
-ajustetabela(milmediana,"AR.Rmse.04.med","AR.Rmse.06.med","AR.Rmse.0204.med","AR.Rmse.0405.med","ARMA.Rmse.0402.med")
+ajustetabela(milmediana,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
 ```
 
 ------------------------------------------------------------------------
 
 ##### **Tabela 7:** Resultados dos cálculos do RMSE com dados faltantes foram substituidos pela mediana (n=1000)
 
-Na Tabela 7 é possível observar novamente que não há diferença clara entre os métodos de imputação pela média e pela mediana. As considerações feitas à respeito da Tabela 56também são válidas para a Tabela 7.
+Na Tabela 7 é possível observar novamente que não há diferença clara entre os métodos de imputação pela média e pela mediana. As considerações feitas à respeito da Tabela 6 também são válidas para a Tabela 7.
 
 ```{r}
 mildown <- read.csv("Planilhas/mildown.csv")
 ajustetabela(mildown,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
+
+difference_dataframes(mildown,milmedia
+                      )
+difference_dataframes(mildown,cemdown)
 ```
 
 ------------------------------------------------------------------------
 
 ##### **Tabela 8:** Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método LOCF (n = 1000)
 
-A Tabela 8 apresentou um padrão de comportamento do RMSE semelhante ao observado na comparação entre o método LOCF e as imputações por média e mediana com 100 observações. O aumento geral do RMSE, previamente identificado nas simulações com $n=1000$, também foi constatado nesta análise.
 
-Destaca-se uma redução significativa do RMSE no ajuste AR(2) ($\phi_1=0.2, \phi_2=0.4$), em linha com o que já havia sido observado na simulação com $n=100$. No entanto, nesta simulação, essa redução também foi registrada no ajuste AR(2) $(\phi_1=0.4,  \phi_2=0.5)$, que apresentou RMSE inferior ao das imputações por média e mediana em todas as porcentagens avaliadas. Apesar disso, este ajuste teve desempenho inferior aos demais da mesma simulação, refletindo o impacto negativo de seu alto grau de complexidade.
+Aqui está o seu texto revisado para maior clareza e fluidez:
+
+A Tabela 8 revelou um padrão de comportamento do RMSE semelhante ao observado na comparação entre o método LOCF e as imputações por média e mediana com 100 observações. Observou-se uma melhora no desempenho em relação aos métodos de imputação por média e mediana em todas as observações.
+
+Quanto à aplicação do método nos modelos com n=100, verificou-se uma redução do RMSE em alguns casos, enquanto em outros houve aumento. Isso sugere que o impacto do número de observações nas simulações que utilizam o método de imputação LOCF não segue um padrão linear.
 
 ```{r}
 milup <- read.csv("Planilhas/milup.csv")
 ajustetabela(milup,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
+
 ```
 
 ------------------------------------------------------------------------
 
 ##### **Tabela 9:** Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método NOCB (n = 1000)
 
-O comportamento dos resultados do RMSE utilizando o método de imputação NOCB para 1000 observações, representado na Tabela 9, é semelhante ao dos demais métodos no que se refere à reação da métrica ao aumento da porcentagem de dados faltantes. O destaque desse método está na "estabilidade" observada nos valores do RMSE entre os diferentes tipos de ajustes. Diferentemente do observado em outras simulações, especialmente nas realizadas com 100 observações, o método NOCB para $n=1000$ apresentou valores de RMSE muito próximos entre os ajustes. Uma variação mais acentuada foi percebida apenas para 40% de dados faltantes.
+O comportamento dos resultados do RMSE utilizando o método de imputação NOCB para 1000 observações, representado na Tabela 9, é semelhante ao resultado observado utilizando o método LOCF. Esse padrão pode ser observado tanto na comparação com os métodos de média e mediana quanto se comparado o uso do método com 100 e 1000 observações.
 
-Em comparação ao método de imputação pela média, o NOCB apresentou desempenho superior nos modelos AR(1)($\phi=0.4$) e ARMA(1,1)($\phi=0.2 , \theta = 0.4$), mas foi consideravelmente inferior no modelo AR(2)($\phi_1=0.4, \phi_2=0.5$). Já em relação ao método LOCF, o método NOCB apresentou resultados semelhantes no modelo ARMA(1,1)($\phi=0.2 , \theta = 0.4$) e ligeiramente melhores no modelo AR(2)($\phi_1=0.2, \phi_2=0.4$, porém teve desempenho inferior em todos os outros modelos.
+O destaque desse método quando comparado diretamente com o LOFC são os valores do RMSE dos ajustes AR(2)($\phi_1=0.4, \phi_2=0.5$) e AR(2)($\phi_1=0.2, \phi_2=0.4$), que apresentaram diminuição do valor da métrica em todas as porcentagens de dados faltantes.
 
 ```{r}
-milinter <-  read.csv("Planilhas/intmil.csv")
+milinter <-  read.csv("Planilhas/milint.csv")
 ajustetabela(ceminter,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
 
-difference_dataframes(milmedia,milinter)
-difference_dataframes(mildown,milinter)
-difference_dataframes(milup,milinter)
 ```
 
 ##### **Tabela 10:** Resultados dos cálculos do RMSE com dados faltantes foram substituidos atravéz do método NOCB (n = 1000)
 
 O comportamento do RMSE para o método de imputação por Interpolação Cúbica com 1000 observações seguiu o padrão observado nos outros métodos, confirmando que as considerações sobre o aumento do RMSE conforme cresce a porcentagem de dados faltantes e a complexidade dos modelos permanecem válidas.
 
-Comparado com os demais métodos de imputação para $n=1000$, a Interpolação Cúbica demonstrou desempenho notavelmente inferior, apresentando RMSE consistentemente maior em todas as proporções de dados faltantes para mais de um modelo, quando comparado com as abordagens de imputação pela média, LOCF e NOCB. O padrão identificado na Tabela 5, que mostrava maior estabilidade nas menores porcentagens de dados faltantes (5% e 10%), também foi observado com $n=1000$; no entanto, os resultados da Interpolação Cúbica apresentaram variações mesmo nessas condições.
+Comparado com os demais métodos de imputação para $n=1000$, a Interpolação Cúbica demonstrou desempenho no geral superior. Quando posto em comparação com as imputações pela média e mediana, o desempenho foi melhor em todos os cenários. Já quando comparado com os métodos LOCF e NOCB, houve uma melhora em alguns ajustes, mas piora no desempenho dos ajustes AR(2)($\phi_1=0.4, \phi_2=0.5$) e AR(2)($\phi_1=0.2, \phi_2=0.4$), apresentando RMSE c maior em todas as proporções de dados faltantespara os modelos. Por fim, quando comparamos com o método aplicado em ajustes com 100 observações, foi observado uma melhor do desempenho em alguns ajustes e piora em outros de forma não linear.
 
-No geral, a Interpolação Cúbica não conseguiu produzir resultados que se aproximassem satisfatoriamente dos modelos originais das séries geradas, podendo indicar limitações na sua aplicabilidade em cenários com grandes volumes de dados e altos níveis de ausência.
+Embora o método seja superior ao de imputação por média e mediana, sua eficácia tem vantagens e desvantagens em relação aos métodos LOCF e NOCB.
 
 ## Visualização gráfica das imputações
 
 Para visualização da imputação dos dados faltantes na série foram gerados gráficos das séries temporais ARMA(1,1)$(\phi=0.2, \theta=0,4)$ com 10% de dados faltantes, onde os trechos coloridos representam os dados imputados. Por vias de comparação, o gráfico da simulação sem a retirada dos dados faltantes também foi gerada.
 
-![](Gráficos/Gráfico Original.png)
+![](Gráficos/Gráfico%20Original.png)
 
 ------------------------------------------------------------------------
 
-![](Gráficos/GrafMédia (seed 31).png)
+![](Gráficos/GrafMédia%20(seed%2031).png)
 
 ------------------------------------------------------------------------
 
-![](Gráficos/GrafMediana (seed 31).png)
+![](Gráficos/GrafMediana%20(seed%2031).png)
 
 ------------------------------------------------------------------------
 
-![](Gráficos/GrafLOCF (seed 31).png)
+![](Gráficos/GrafLOCF%20(seed%2031).png)
 
 ------------------------------------------------------------------------
 
-![](Gráficos/GrafNOCB (seed 31).png)
+![](Gráficos/GrafNOCB%20(seed%2031).png)
 
 ------------------------------------------------------------------------
 
-![](Gráficos/GrafInterpolação (seed 31).png)
+![](Gráficos/GrafInterpolação%20(seed%2031).png)
