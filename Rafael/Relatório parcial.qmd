@@ -1,17 +1,11 @@
 ---
 title: "Relatório de progresso" # -----> Título
 subtitle: "Iniciação Científica" # -----> Subtítulo
-author: "Rafael Jordane" # -----> Autoria
-date: "2024-09-29" # -----> Data de publicação
-date-format: short # -----> Formato de data curto: dd/mm/aaaa
-lang: pt # -----> Linguagem: português
-format: 
-  html:  
-    code-fold: true # -----> code-fold: `true` para "ocultar" o bloco de códigos
-    df_print: paged
-    theme: 
-      light: [pulse,custom.scss]
-title-block-banner: true # -----> Estilo de banner no topo do documento
+author: "Rafael Jordane de Souza Oliveira"
+format: pdf
+execute:
+  echo: false
+editor: visual
 ---
 
 ```{r}
@@ -118,8 +112,7 @@ Em relação à imputação pela média e pela mediana, o método LOCF resultou 
 ```{r}
 cemup <- read.csv("Planilhas/cemup.csv")
 ajustetabela(cemup,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
-difference_dataframes(cemup,cemmedia)
-difference_dataframes(cemup,cemdown)
+
 ```
 
 ------------------------------------------------------------------------
@@ -162,8 +155,6 @@ Comparando com os métodos de imputação pela média e mediana, houve uma redu�
 ceminter <-  read.csv("Planilhas/cemint.csv")
 ajustetabela(ceminter,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
 
-difference_dataframes(ceminter, cemmedia)
-difference_dataframes(ceminter, cemup)
 ```
 
 ------------------------------------------------------------------------
@@ -179,7 +170,6 @@ De maneira geral, a aplicação da Interpolação Cúbica demonstrou melhorias s
 ```{r}
 milmedia <- read.csv("Planilhas/milmedia.csv")
 ajustetabela(milmedia,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
-
 
 ```
 
@@ -206,9 +196,6 @@ Na Tabela 7 é possível observar novamente que não há diferença clara entre 
 mildown <- read.csv("Planilhas/mildown.csv")
 ajustetabela(mildown,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","ARMA.Rmse.0402")
 
-difference_dataframes(mildown,milmedia
-                      )
-difference_dataframes(mildown,cemdown)
 ```
 
 ------------------------------------------------------------------------
