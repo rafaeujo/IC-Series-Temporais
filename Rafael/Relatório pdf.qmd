@@ -156,7 +156,7 @@ ajustetabela(ceminter,"AR.Rmse.04","AR.Rmse.06","AR.Rmse.0204","AR.Rmse.0405","A
 
 ------------------------------------------------------------------------
 
-##### **Tabela 5:** Resultados dos cálculos do RMSE com dados faltantes substituidos atravéz do método de Interpolação Cúbica (slice) 
+##### **Tabela 5:** Resultados dos cálculos do RMSE com dados faltantes substituidos atravéz do método de Interpolação Cúbica (slice)
 
 A Tabela 5 revela que o padrão de crescimento do RMSE acompanha o aumento da complexidade dos modelos e da porcentagem de dados faltantes, mantendo uma tendência semelhante aos demais métodos de imputação. No caso da Interpolação, os maiores valores de RMSE foram registrados nas proporções mais altas de dados ausentes (20% e 40%), sugerindo uma redução na confiabilidade do método quando há uma quantidade excessiva de valores faltantes. Em contrapartida, nas porcentagens menores (5% e 10%), observou-se maior estabilidade nos RMSE, com desempenho ocasionalmente superior ao de outros métodos, embora sem um padrão consistente.
 
@@ -233,24 +233,24 @@ No geral, a Interpolação Cúbica não conseguiu produzir resultados que se apr
 
 Para visualização da imputação dos dados faltantes na série foram gerados gráficos das séries temporais ARMA(1,1)$(\phi=0.2, \theta=0,4)$ com 10% de dados faltantes, onde os trechos coloridos representam os dados imputados. Por vias de comparação, o gráfico da simulação sem a retirada dos dados faltantes também foi gerada.
 
-![](Gráficos/Gráfico Original.png)
+![](Gráficos/Gráfico%20Original.png)
 
 ------------------------------------------------------------------------
 
-![](Gráficos/GrafMédia (seed 31).png)
+![](Gráficos/GrafMédia%20(seed%2031).png)
 
 ------------------------------------------------------------------------
 
-![](Gráficos/GrafMediana (seed 31).png)
+![](Gráficos/GrafMediana%20(seed%2031).png)
 
 ------------------------------------------------------------------------
 
-![](Gráficos/GrafLOCF (seed 31).png)
+![](Gráficos/GrafLOCF%20(seed%2031).png)
 
 ------------------------------------------------------------------------
 
-![](Gráficos/GrafNOCB (seed 31).png)
+![](Gráficos/GrafNOCB%20(seed%2031).png)
 
 ------------------------------------------------------------------------
 
-![](Gráficos/GrafInterpolação (seed 31).png)
+![](Gráficos/GrafInterpolação%20(seed%2031).png)
