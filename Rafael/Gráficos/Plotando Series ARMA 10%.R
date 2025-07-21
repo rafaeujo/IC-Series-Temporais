@@ -14,11 +14,13 @@ ARMA11a.100 <- arima.sim(n = 100, list(ar = c(0.4), ma = c(0.2)))
 
 ## Imputando dados faltantes
 
-mdataARMA1.100 <- data.frame(Dado = ARMA11a.100, Coluna.controle = ARMA11b.100)
+mdataARMA1.100 <- data.frame(Dado = ARMA11a.100, Coluna.controle = ARMA11a.100)
 
 miss05_ARMA1.100 <- delete_MAR_censoring(mdataARMA1.100, 0.05, "Dado", cols_ctrl = "Coluna.controle")
 miss10_ARMA1.100 <- delete_MAR_censoring(mdataARMA1.100, 0.10, "Dado", cols_ctrl = "Coluna.controle")
 
+
+write.csv(miss10_ARMA1.100, "Gráfico.deep.csv")
 #Plotando a série bonitinha
 
 #Original
@@ -179,4 +181,4 @@ ggplot(dados, aes(x = Tempo, y = Observacao, color = Tipo)) +
 # Carregar as bibliotecas necessárias
 library(ggplot2)
 library(imputeTS)
-p0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000o=ttttttttttttttttttttttttttttttttttrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrgeeeeeeeeeeeeeeeeeeeeeeeeeees39888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888219
+
